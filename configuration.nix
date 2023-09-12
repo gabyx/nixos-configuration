@@ -11,34 +11,52 @@
       experimental-features = nix-command flakes
     '';
   };
+
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./cachix.nix
     ];
 
   # Allow proprietary software (such as the NVIDIA drivers).
   nixpkgs.config.allowUnfree = true;
+  
+  # Set your time zone.
+  time.timeZone = "Europe/Zurich";
+  
+  ### Keyboard/Fonts Settings =======================================================
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_US.UTF-8";
+  services.xserver.layout = "us";
+  console = {
+    font = "JetBrainsMono Nerd Font";
+  };
 
+  # Fonts
+  fonts.fonts = with pkgs; [
+    nerdfonts
+  ];
+  # ===========================================================================
+
+  ### Bootloader ==============================================================
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.useOSProber = true;
   # boot.loader.grub.efiInstallAsRemovable = true;
-  #boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  # boot.loader.efi.efiSysMountPoint = "/boot/efi";
   # Define on which hard drive you want to install Grub.
-  boot.loader.grub.device = "nodev"; # or "nodev" for efi only
-
+  boot.loader.grub.device = "nodev"; # or "nodev" for EFI only
+  
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.enable = false;
+  # Allowing to change the boot order.
   boot.loader.efi.canTouchEfiVariables = true;
-
-  # networking.hostName = "nixos"; # Define your hostname.
-  networking.wireless.enable = false;  # Enables wireless support via wpa_supplicant.
-
-  # Set your time zone.
-  time.timeZone = "US/Eastern";
+  # ===========================================================================
+  
+  ### Networking ==============================================================
+  networking.hostName = "gabyx-nixos"; # Define your hostname.
+  networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
@@ -50,27 +68,32 @@
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  # ===========================================================================
 
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-  console = {
-    font = "Lat2-Terminus16";
-    keyMap = "us";
-  };
+  ### Windowing (DisplayManager, DesktopManager, WindowManager)
+  # Enable the X windowing system.
+  services.xserver.enable = true;
+  services.xserver.autorun = true;
 
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;
-  # services.xserver.autorun = true;
-
-  # Enable the Plasma 5 Desktop Environment.
-  # services.xserver.displayManager.sddm.enable = true;
+  # Enable the Gnome Display Manager.
   services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.wayland = false;
-  services.xserver.desktopManager.plasma5.enable = true;
-  # Window Managers
-  #services.xserver.windowManager.stumpwm.enable = true;
-  #services.xserver.windowManager.ratpoison.enable = true;
-  #services.xserver.windowManager.exwm.enable = true;
+  # Do not use X11, use Wayland.
+  services.xserver.displayManager.gdm.wayland = true;
+  # Enable the Gnome Desktop Manager.
+  services.xserver.desktopManager.gnome.enable = true;
+  
+  # Exclude some stupid gnome stuff.
+  environment.gnome.excludePackages = (with pkgs; [ 
+    gnome-photos, 
+    gnome-tour 
+  ])
+  # ===========================================================================
+
+  ### Graphics Settings =======================================================
+  #services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = [ "nouveau" ];
+  hardware.opengl.driSupport32Bit = true;
+  # ===========================================================================
 
   programs.sway = {
     enable = true;
@@ -80,11 +103,11 @@
       swayidle
       wl-clipboard
       wf-recorder
-      mako # notification daemon
+      # Notification daemon
+      mako 
+      # Screenshots
       grim
-     #kanshi
       slurp
-      alacritty # Alacritty is the default terminal in the config
       dmenu # Dmenu is the default in the config but i recommend wofi since its wayland native
     ];
     extraSessionCommands = ''
@@ -100,244 +123,157 @@
 
   # QT
   programs.qt5ct.enable = true;
-
-
-  # Graphics settings
-  #services.xserver.videoDrivers = [ "nvidia" ];
-  services.xserver.videoDrivers = [ "nouveau" ];
-
-  hardware.opengl.driSupport32Bit = true;
-
-  # Configure keymap in X11
-  services.xserver.layout = "us";
-  # services.xserver.xkbOptions = "eurosign:e";
-
-
+  
+  ### Printing ================================================================
   # Enable CUPS to print documents.
   services.printing.enable = true;
-
+  # ===========================================================================
+  
+  ### Sound Settings ==========================================================
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true;
-
+  # ===========================================================================
+  
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  ### User Settings ==========================================================
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.kevin = {
+  users.users.gabyx = {
     isNormalUser = true;
     # Add libvirtd if using virt-manager
-    extraGroups = [ "wheel" "disk" "libvirtd" "docker" "audio" "video" "input" "systemd-journal" "networkmanager" "network" "davfs2" ];
+    extraGroups = [ 
+      "wheel" 
+      "disk" 
+      "libvirtd" 
+      "docker" 
+      "audio" 
+      "video" 
+      "input" 
+      "systemd-journal" 
+      "networkmanager" 
+      "network" 
+      "davfs2" ];
   };
-  users.extraGroups.vboxusers.members = [ "kevin" ];
-  # For VR (Simula)
-  nix.trustedUsers = [ "root" "kevin"];
 
-  # Fonts
-  fonts.fonts = with pkgs; [
-    fira-code
-    fira
-    cooper-hewitt
-    ibm-plex
-    jetbrains-mono
-    iosevka
-    # bitmap
-    spleen
-    fira-code-symbols
-    powerline-fonts
-    nerdfonts
-  ];
+  users.extraGroups.vboxusers.members = [ "gabyx" ];
+  # ===========================================================================
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    # editors
-    # emacs
-    emacsPgtkGcc
-    mg
-    neovim-nightly
-    jetbrains.rider
-    jetbrains.datagrip
-    jetbrains.idea-ultimate
-    # development
-    dbeaver
-    postman
-    postgresql
-    # tools
-    gparted
-    kdiff3
-    remmina
-    wezterm
-    unclutter
-    picom
-    nitrogen
-    dmenu
-    rofi
-    tmux
-    dunst
-    pcmanfm
-    filezilla
-    libreoffice
-    zoom-us
-    vlc
-    etcher
-    # art
-    krita
-    # wacom
-    xf86_input_wacom
-    wacomtablet
-    libwacom
-    # gaming/vr
-    openhmd
-    # virtualisation
-    spice
-    docker-compose
-    virt-manager
-    gnome3.dconf # needed for saving settings in virt-manager
-    libguestfs # needed to virt-sparsify qcow2 files
-    libvirt
-    # virtualbox
-    #gnome.gnome-boxes
-    # docker
-    # dockertools
-    # cli
-    coreutils
-    binutils
-    pciutils
-    dmidecode
+    # Basic
     autoconf
-    gcc
-    gnumake
-    llvm
-    libclang
-    clang
-    cmake
-    linuxPackages.nvidia_x11
-    libGLU libGL
-    xorg.libXi xorg.libXmu freeglut
-    xorg.libXext xorg.libX11 xorg.libXv xorg.libXrandr zlib
-    libtool
-    libvterm
-    ncurses5
-    stdenv.cc
-    wget
+    binutils
+    coreutils-full
+    findutils
     curl
-    gitAndTools.gitFull
-    gitAndTools.grv
-    git-lfs
-    man
-    mkpasswd
-    unzip
+    wget
     direnv
-    lshw
-    pandoc
-    mlocate
-    fzf
-    file
-    scrot
-    image_optim
-    ffmpeg
-    killall
-    xclip
+    dmidecode
     fd
+    file
+    fzf
+    killall
     ripgrep
     ripgrep-all
+    mkpasswd
+    mlocate
+    lshw
+    ncurses5
+    unzip
+    tar
+    libGLU 
+    libGL
+    pciutils
+    openvpn
+    # Editors
+    neovim-nightly
+    vscode
+    #
+    # Tools
+    gnome.gnome-tweaks
+    dunst
+    etcher
+    gparted
+    kdiff3
+    rofi # Window Switcher
+    tmux
+    wezterm
     silver-searcher
-    screenfetch
-    redshift
     appimage-run
+    #
+    # Devices (Wacom)
+    libwacom
+    wacomtablet
+    xf86_input_wacom
+    #
+    # Virtualisation
+    docker
+    docker-compose
+    dockertools
+    gnome3.dconf # Needed for saving settings in virt-manager
+    libguestfs # Needed to virt-sparsify qcow2 files
+    libvirt
+    spice
+    virt-manager
+    # Programming
+    clang
+    clangd
+    cmake
+    gcc
+    gdb
+    git-lfs
+    gitAndTools.gitFull
+    gitAndTools.grv
+    gnumake
+    go
+    libclang
+    libtool
+    llvm
+    nodejs
+    openjdk
+    rustup
+    texlive.combined.scheme-full
+    #
+    # MultiMedia
+    pandoc
     transmission
     transmission-gtk
-    stumpish
-    openvpn
-    # protonmail
+    ffmpeg
+    vlc
+    inkscape
+    krita
+    xclip
+    screenfetch
+    scrot
+    redshift
+    zoom-us
+    firefox
+    chromium
     protonvpn-gui
     protonvpn-cli
     protonmail-bridge
-    # programming
-    ccls
-    gcc
-    gdb
-    rustup
-    openjdk
-    nodejs
-    python3Full
-    php
-    php74Packages.composer
-    mono
-    msbuild
-    dotnet-sdk_5
-    omnisharp-roslyn
-    gradle
-    jdk
-    # webdav
-    davfs2
-    autofs5
-    fuse
-    sshfs
-    cadaver
-    # node packages
-    nodePackages.typescript-language-server
-    nodePackages.vscode-css-languageserver-bin
-    nodePackages.vscode-html-languageserver-bin
-    nodePackages.vls
-    nodePackages.gulp-cli
-    nodePackages.tern
-    # unity
-    unity3d
-    unityhub
-    # dictionary
+    # Dictionaries
     aspell
     aspellDicts.en
     aspellDicts.en-computers
     hunspell
     hunspellDicts.en-us
-    # latex
-    texlive.combined.scheme-full
-    # browsers
-    firefox
-    chromium
-    # media
-    spotify
-    # gtk
+    # GTK Engins (GUI Library)
     gtk-engine-murrine
     gtk_engines
     gsettings-desktop-schemas
     lxappearance
-    # nix
+    # Nix
     nixpkgs-lint
+    stdenv.cc
     nixpkgs-fmt
     nixfmt
-    # emacs
-    (emacsWithPackagesFromUsePackage {
-      config = /home/kevin/.emacs.el;
-
-      alwaysEnsure = true;
-      alwaysTangle = true;
-
-      # Optionally provide extra packages not in the configuration file.
-      # extraEmacsPackages = epkgs: [
-      #   epkgs.vterm
-      # ];
-
-      # Optionally override derivations.
-      # override = epkgs: epkgs // {
-      #   weechat = epkgs.melpaPackages.weechat.overrideAttrs(old: {
-      #     patches = [ ./weechat-el.patch ];
-      #   });
-      # };
-    })
   ];
 
-  # Emacs
-  services.emacs.enable = true;
-  services.emacs.package = pkgs.emacsPgtkGcc;
-  # services.emacs.package = import /home/kevin/.emacs.d { pkgs = pkgs; };
-
   nixpkgs.overlays = [
-    (import (builtins.fetchTarball {
-      url = https://github.com/nix-community/emacs-overlay/archive/master.tar.gz;
-    }))
     (import (builtins.fetchTarball {
       url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
     }))
@@ -348,7 +284,8 @@
      };
    })
   ];
-
+  
+  ### Program Settings ========================================================
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   programs.mtr.enable = true;
@@ -356,12 +293,14 @@
     enable = true;
     enableSSHSupport = true;
   };
-
-  # Virtmanager settings
+  # ===========================================================================
+  
+  ### Virtualisation ==========================================================
+  # VirtManager Settings
   programs.dconf.enable = true;
   services.qemuGuest.enable = true;
   #boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "virtio_pci" "sr_mod" "virtio_blk" ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = [ "kvm-amd" ];
 
   virtualisation.libvirtd = {
     enable = true;
@@ -373,22 +312,23 @@
 
   # Docker
   virtualisation.docker.enable = true;
-  #virtualisation.docker.enableOnBoot = true;
-
-  # Mount extra drive
-   fileSystems."/mnt/sdb1" = {
-   device = "/dev/sdb1";
-   fsType = "auto";
-   options = [ "defaults" "user" "rw" "utf8" "noauto" "umask=000" ];
-   };
-
-   # Steam
-   programs.steam.enable = true;
+  virtualisation.docker.enableOnBoot = true;
 
   # virtualisation.virtualbox.guest.enable = true;
   # virtualisation.virtualbox.host.enable = true;
   # virtualisation.virtualbox.host.enableExtensionPack = true;
+  # ===========================================================================
 
+  ### Mounting ================================================================
+  # Mount extra drive
+  # fileSystems."/mnt/sdb1" = {
+  # device = "/dev/sdb1";
+  # fsType = "auto";
+  # options = [ "defaults" "user" "rw" "utf8" "noauto" "umask=000" ];
+  # };
+  # ===========================================================================
+
+  ### Services ================================================================
   # services.xrdp.enable = true;
   # services.xrdp.defaultWindowManager = "startplasma-x11";
   # networking.firewall.allowedTCPPorts = [ 3389 ];
@@ -396,13 +336,17 @@
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
+  # ===========================================================================
 
+  ### Firewall ================================================================
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+  # ===========================================================================
 
+  ### NixOS Release Settings===================================================
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
@@ -411,6 +355,6 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.autoUpgrade.enable = true;
   system.autoUpgrade.allowReboot = true;
-  system.stateVersion = "21.05";
-
+  system.stateVersion = "23.05";
+  # ===========================================================================
 }
