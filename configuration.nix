@@ -26,7 +26,10 @@
   ### Keyboard/Fonts Settings =======================================================
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
-  services.xserver.layout = "us";
+  services.xserver = {
+    layout = "us";
+    xkbVariant = "";
+  };
   console = {
     font = "JetBrainsMono Nerd Font";
   };
@@ -47,6 +50,13 @@
   # boot.loader.efi.efiSysMountPoint = "/boot/efi";
   # Define on which hard drive you want to install Grub.
   boot.loader.grub.device = "nodev"; # or "nodev" for EFI only
+
+  # Crypto
+  boot.loader.grub.enableCryptodisk = true;
+  boot.initrd.secrets {
+    "/crypto_keyfile.bin" = null;
+  }
+  boot.initrd.luks.devices."luks-<YOUR_GUID>".keyfile = "/crypto_keyfile.bin";
   
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = false;
@@ -56,6 +66,7 @@
   
   ### Networking ==============================================================
   networking.hostName = "gabyx-nixos"; # Define your hostname.
+  networking.networkmanager.enable = true;
   networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
@@ -133,6 +144,13 @@
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  }
   # ===========================================================================
   
   # Enable touchpad support (enabled default in most desktopManager).
