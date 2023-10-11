@@ -234,7 +234,8 @@
     gnome3.dconf # Needed for saving settings in virt-manager
     libguestfs # Needed to virt-sparsify qcow2 files
     libvirt
-    spice
+    spice # For automatic window resize if this conf is used as OS in VM
+    spice-vdagent
     virt-manager
     # Programming
     clang
@@ -317,6 +318,7 @@
   # VirtManager Settings
   programs.dconf.enable = true;
   services.qemuGuest.enable = true;
+  services.spice-vdagentd.enable = true
   #boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "virtio_pci" "sr_mod" "virtio_blk" ];
   boot.kernelModules = [ "kvm-amd" ];
 
