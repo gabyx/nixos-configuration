@@ -23,19 +23,23 @@ useful information when going through these steps:
 
 2. Open `virt-manager` and create a new machine `nixos` by using the
    [downloaded NixOS ISO file](https://channels.nixos.org/nixos-23.05/latest-nixos-gnome-x86_64-linux.iso).
+   Create a virtual disk `nixos.qcow2` somewhere.
 
-3. Boot up the virtual machine `nixos`. The graphical installer should show up.
-   Install NixOS by going through the
+3. Boot up the virtual machine `nixos` in `virt-manager`. The graphical
+   installer should show up. Install NixOS by going through the
    [graphical installer](https://nixos.org/manual/nixos/stable/#sec-installation-graphical).
    Reboot after the install.
 
-4. Install base tools to start working on the `/etc/configuration.nix`:
+4. Start the virtual machine with [`start-vm.sh`](start-vm.sh) by adjusting the
+   `disk=` file.
+
+5. Install base tools to start working on the `/etc/configuration.nix`:
 
    ```shell
-   nix-env -i git curl neovim
+   nix-env -i git curl neovim wezterm tmux
    ```
 
-5. Clone this repo
+6. Clone this repo
 
    ```shell
    git clone https://github.com/gabyx/nixos-configuration.git

@@ -102,8 +102,8 @@
 
   ### Graphics Settings =======================================================
   #services.xserver.videoDrivers = [ "nvidia" ];
-  services.xserver.videoDrivers = [ "nouveau" ];
-  hardware.opengl.driSupport32Bit = true;
+  # services.xserver.videoDrivers = [ "nouveau" ];
+  # hardware.opengl.driSupport32Bit = true;
   # ===========================================================================
 
   programs.sway = {
@@ -219,6 +219,7 @@
     rofi # Window Switcher
     tmux
     wezterm
+    chezmoi
     silver-searcher
     appimage-run
     #
@@ -243,9 +244,8 @@
     cmake
     gcc
     gdb
+    git
     git-lfs
-    gitAndTools.gitFull
-    gitAndTools.grv
     gnumake
     go
     libclang
@@ -312,6 +312,10 @@
     enable = true;
     enableSSHSupport = true;
   };
+
+  programs.git = {
+    package = pkgs.gitFull;
+  }
   # ===========================================================================
   
   ### Virtualisation ==========================================================
@@ -351,11 +355,14 @@
   ### Services ================================================================
   # services.xrdp.enable = true;
   # services.xrdp.defaultWindowManager = "startplasma-x11";
-  # networking.firewall.allowedTCPPorts = [ 3389 ];
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    passwordAuthentication = true
+  }
+  networking.firewall.allowedTCPPorts = [ 22 ];
   # ===========================================================================
 
   ### Firewall ================================================================
