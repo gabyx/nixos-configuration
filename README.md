@@ -10,7 +10,7 @@ Also we want to build a
 [NixOS Installer](https://nixos.wiki/wiki/Creating_a_NixOS_live_CD) at then end
 out of the working NixOS.
 
-## Install Base NixOS into QEMU Virtual Machine
+## Install NixOS into QEMU Virtual Machine
 
 The documentation [NixOS Manual](https://nixos.org/manual/nixos/stable) provides
 useful information when going through these steps:
@@ -21,6 +21,10 @@ useful information when going through these steps:
    sudo apt-get install virt-manager
    ```
 
+1. Adjust `.env` file for your variables.
+
+## Create VM with `virt-manager`
+
 2. Open `virt-manager` and create a new machine `nixos` by using the
    [downloaded NixOS ISO file](https://channels.nixos.org/nixos-23.05/latest-nixos-gnome-x86_64-linux.iso).
    Create a virtual disk `nixos.qcow2` somewhere.
@@ -30,16 +34,21 @@ useful information when going through these steps:
    [graphical installer](https://nixos.org/manual/nixos/stable/#sec-installation-graphical).
    Reboot after the install.
 
-4. Start the virtual machine with [`start-vm.sh`](start-vm.sh) by adjusting the
-   `disk=` file.
+### Create with Script
 
-5. Install base tools to start working on the `/etc/configuration.nix`:
+1. Create the VM by doing `create-vm.sh` and clicking through the installer.
+
+2. Start the virtual machine with [`start-vm.sh`](start-vm.sh).
+
+### Install Base Tools
+
+3. Install base tools to start working on the `/etc/configuration.nix`:
 
    ```shell
    nix-env -iA git curl neovim wezterm tmux clang
    ```
 
-6. Clone this repo
+4. Clone this repo
 
    ```shell
    git clone https://github.com/gabyx/nixos-configuration.git
