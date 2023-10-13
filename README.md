@@ -36,7 +36,7 @@ useful information when going through these steps:
 5. Install base tools to start working on the `/etc/configuration.nix`:
 
    ```shell
-   nix-env -i git curl neovim wezterm tmux
+   nix-env -iA git curl neovim wezterm tmux clang
    ```
 
 6. Clone this repo
