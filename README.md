@@ -77,7 +77,7 @@ useful information when going through these steps:
 1. Modify the [`configuration.nix`](configuration.nix) in this repo and use
 
    ```shell
-   nixos-rebuild -I nixos-config=~/nixos-configuration/configuration.nix switch -p test
+   ./rebuild-nixos.sh
    ```
 
    to make a new entry in the bootloader with the new system `test`. **We leave
