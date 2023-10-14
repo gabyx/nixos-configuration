@@ -264,7 +264,7 @@
   programs.git = {
     package = pkgs.gitFull;
     config.credential.helper = "libsecret";
-  }
+  };
   # ===========================================================================
   
   ### Virtualisation ==========================================================
@@ -301,7 +301,8 @@
   services.openssh = {
     enable = true;
     passwordAuthentication = true
-  }
+  };
+
   networking.firewall.allowedTCPPorts = [ 22 ];
   # ===========================================================================
 
@@ -324,4 +325,4 @@
   system.autoUpgrade.allowReboot = true;
   system.stateVersion = "23.05";
   # ===========================================================================
-}
+};
