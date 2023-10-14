@@ -62,7 +62,7 @@
     extraLayouts.programmer = {
       description = "Programmer (US)";
       languages = [ "eng" ];
-      symbolsFile = "./configs/keyboard/symbols/programmer";
+      symbolsFile = "/home/nixos/nixos-configuration/configs/keyboard/symbols/programmer";
     };
   };
 
