@@ -54,7 +54,7 @@ useful information when going through these steps:
    ./install-tools.sh
    ```
 
-## Modify the Installation
+## Modify NixOS
 
 1. Modify the [`configuration.nix`](configuration.nix) in this repo and use
 

@@ -323,6 +323,7 @@
 
   programs.git = {
     package = pkgs.gitFull;
+    config.credential.helper = "libsecret";
   }
   # ===========================================================================
   
