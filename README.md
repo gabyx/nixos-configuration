@@ -64,6 +64,7 @@ I use `chezmoi` to install my user config on the machine. Do this
 ```shell
 nix-env -iA nixos.chezmoi
 chezmoi init https://github.com/gabyx/chezmoi.git
+chezmoi apply
 ```
 
 ## Modify NixOS

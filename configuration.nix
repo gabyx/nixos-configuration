@@ -56,11 +56,18 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   services.xserver = {
-    layout = "us";
+    layout = "programmer";
     xkbVariant = "";
+    xkbOptions = "ctrl:swapcaps";
+    extraLayouts.programmer = {
+      description = "Programmer (US)";
+      languages = [ "eng" ];
+      symbolsFile = "./configs/keyboard/symbols/programmer";
+    };
   };
+
   console = {
-    keyMap = "us"
+    keyMap = "programmer";
     font = "JetBrainsMono Nerd Font";
   };
 

@@ -10,5 +10,4 @@ set -u
 
 DIR=$(cd "$(dirname "$0")" && pwd)
 
-sudo git config --system credential.helper ""
 nix-env -iA nixos.gitFull nixos.curl nixos.neovim nixos.wezterm nixos.tmux nixos.clang
