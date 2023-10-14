@@ -325,4 +325,4 @@
   system.autoUpgrade.allowReboot = true;
   system.stateVersion = "23.05";
   # ===========================================================================
-};
+}
