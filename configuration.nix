@@ -349,7 +349,7 @@
   virtualisation.libvirtd = {
     enable = true;
     qemu = { 
-      ovmf = true;
+      ovmf.enable = true;
       runAsRoot = true;
     };
     onBoot = "ignore";
