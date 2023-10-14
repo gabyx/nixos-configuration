@@ -1,9 +1,6 @@
 
 #!/usr/bin/env bash
-#
-# Copied from /var/log/libvirt/qemu/nixos.log
-# This is the command virt-manager used to start the VM.
-#
+# Some minimal tools to get you started in the VM
 
 set -e
 set -u
@@ -25,6 +22,7 @@ nix-env -iA \
 
 git config --global user.name "$GIT_USER_NAME"
 git config --global user.email "$GIT_USER_EMAIL"
+git config --global credential.helper "cache --timeout 72000"
 
 if [ "$DOTFILE_ENABLE" = "true" ]; then
 chezmoi init https://github.com/gabyx/chezmoi.git
