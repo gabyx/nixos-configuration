@@ -10,6 +10,9 @@ Also we want to build a
 [NixOS Installer](https://nixos.wiki/wiki/Creating_a_NixOS_live_CD) at then end
 out of the working NixOS.
 
+**Note: This setup is by far kick-ass, its more to get you started on an initial
+NixOS, which you then can drive further and even install on real hardware.**
+
 ## Prerequisites
 
 Some key insights to ease understanding when working through the below NixOS
@@ -92,6 +95,8 @@ useful information when going through these steps:
 
    to make a new entry in the bootloader with the new system `test`. **We leave
    the system initial `/etc/nixos/configuration.nix` untouched.**
+
+   **Note: Make sure you use your disk id in `boot.initrd.luks.devices`.**
 
 ## Resizing the _LUKS Encrypted_ Disk (if disk is full)
 
