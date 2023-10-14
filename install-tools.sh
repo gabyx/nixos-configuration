@@ -20,10 +20,16 @@ nix-env -iA \
   nixos.wezterm \
   nixos.tmux \
   nixos.clang \
-  nixos.google-chrome
+  nixos.google-chrome \
+  nixos.chezmoi
 
 git config --global user.name "$GIT_USER_NAME"
 git config --global user.email "$GIT_USER_EMAIL"
+
+if [ "$DOTFILE_ENABLE" = "true" ]; then
+chezmoi init https://github.com/gabyx/chezmoi.git
+chezmoi apply
+fi
 
 # Install my AstroNvim config
 if [ "$NVIM_ASTRO_ENABLE" = "true" ]; then
