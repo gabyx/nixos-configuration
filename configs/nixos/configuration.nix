@@ -300,7 +300,7 @@
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
-    passwordAuthentication = true
+    passwordAuthentication = true;
   };
 
   networking.firewall.allowedTCPPorts = [ 22 ];
