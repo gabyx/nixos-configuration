@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Copied from /var/log/libvirt/qemu/nixos.log
-# This is the command virt-manager used to start the VM.
+# This is the simplified command virt-manager used to start the VM.
 #
 
 set -e

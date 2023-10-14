@@ -37,7 +37,8 @@ useful information when going through these steps:
 
 ### Create with Script
 
-1. Create the VM by doing `create-vm.sh` and clicking through the installer.
+1. Create the VM by doing `create-vm.sh` and clicking through the installer. Use
+   an LUKS encrypted disk.
 
 1. Start the virtual machine with [`start-vm.sh`](start-vm.sh).
 
@@ -77,3 +78,18 @@ chezmoi apply
    ```
 
    to make a new entry in the bootloader with the new system `test`.
+
+## Resizing the _LUKS Encrypted_ Disk (if disk is full)
+
+1. On the host: Resize the `.qcow2` file with
+
+   ```shell
+   source .env-os
+   qemu-img resize "$NIXOS_DISK" +10G
+   ```
+
+1. Start the installer with `create-vm.sh` again.
+1. Once in the installer, run `gparted` and `Decrypt` the partition (right click
+   on it) and enter the password.
+1. Use `Partition -> Check` which does an automatic resize to fill the
+   partition.
