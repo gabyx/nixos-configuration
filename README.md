@@ -19,6 +19,16 @@ install.
   string") and `Path` (`/this/is/a/path`) which are two different things and
   treated differently.
 
+- Check the manual from the top of
+  [NixOs](https://nixos.org/manual/nixos/stable).
+
+- During modifications consult the two pages:
+
+  - [Package Search](https://search.nixos.org/packages?)
+  - [Options Search](https://search.nixos.org/options?)
+
+  for package names and options.
+
 ## Install NixOS into QEMU Virtual Machine
 
 The documentation [NixOS Manual](https://nixos.org/manual/nixos/stable) provides
