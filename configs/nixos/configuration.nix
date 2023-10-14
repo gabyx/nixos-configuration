@@ -12,6 +12,11 @@
 
   # Allow proprietary software (such as the NVIDIA drivers).
   nixpkgs.config.allowUnfree = true;
+ 
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-12.2.3"
+  ];
+  
   # Bootloader.
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
@@ -191,15 +196,14 @@
     # Virtualisation
     docker
     docker-compose
-    gnome3.dconf # Needed for saving settings in virt-manager
+    dconf # Needed for saving settings in virt-manager
     libguestfs # Needed to virt-sparsify qcow2 files
     libvirt
     spice # For automatic window resize if this conf is used as OS in VM
     spice-vdagent
     virt-manager
     # Programming
-    clang
-    clangd
+    llvmPackages_16.clang-unwrapped
     cmake
     gcc
     gdb
