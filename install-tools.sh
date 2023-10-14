@@ -23,6 +23,7 @@ git config --global user.name "$GIT_USER_NAME"
 git config --global user.email "$GIT_USER_EMAIL"
 git config --global credential.helper "cache --timeout 72000"
 
+# shellcheck disable=SC2153
 if [ "$DOTFILE_ENABLE" = "true" ]; then
 	chezmoi init https://github.com/gabyx/chezmoi.git
 	chezmoi apply
