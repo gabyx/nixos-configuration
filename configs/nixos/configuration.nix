@@ -275,8 +275,8 @@
 
   virtualisation.libvirtd = {
     enable = true;
-    qemuOvmf = true;
-    qemuRunAsRoot = true;
+    qemu.ovmf = true;
+    qemu.runAsRoot = true;
     onBoot = "ignore";
     onShutdown = "shutdown";
   };
@@ -298,7 +298,7 @@
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
-    passwordAuthentication = true;
+    settings.PasswordAuthentication = true;
   };
 
   networking.firewall.allowedTCPPorts = [ 22 ];
