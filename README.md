@@ -30,10 +30,13 @@ useful information when going through these steps:
    sudo apt-get install virt-manager
    ```
 
+1. Download the NixOS ISO file from
+   [here](https://nixos.org/download#download-nixos).
+
 1. Adjust `.env` file from `.env.tmpl` for your variables.
 1. Adjust `.env-os` file from `.env-os.tmpl` for your variables.
 
-## Create VM with `virt-manager`
+### Create VM with `virt-manager` (not recommended)
 
 1. Open `virt-manager` and create a new machine `nixos` by using the
    [downloaded NixOS ISO file](https://channels.nixos.org/nixos-23.05/latest-nixos-gnome-x86_64-linux.iso).
@@ -44,7 +47,7 @@ useful information when going through these steps:
    [graphical installer](https://nixos.org/manual/nixos/stable/#sec-installation-graphical).
    Reboot after the install.
 
-### Create with Script
+### Create VM with Script
 
 1. Create the VM by doing `create-vm.sh` and clicking through the installer. Use
    an LUKS encrypted disk.
@@ -53,7 +56,7 @@ useful information when going through these steps:
 
 ### Install Base Tools
 
-1. Clone this repo
+1. Clone this repo (we install git and google-chrome to access passwords)
 
    ```shell
    export NIXPGS_ALLOW_UNFREE=1
@@ -81,7 +84,8 @@ useful information when going through these steps:
 
 ## Resizing the _LUKS Encrypted_ Disk (if disk is full)
 
-On the host do the following:
+If `nixos-rebuild` fails due to too little disk space, use the following easy
+fix. On the host do the following:
 
 1. Resize the `.qcow2` file with
 
