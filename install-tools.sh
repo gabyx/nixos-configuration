@@ -11,6 +11,8 @@ set -u
 DIR=$(cd "$(dirname "$0")" && pwd)
 . "$DIR/.env"
 
+export NIXPKGS_ALLOW_UNFREE=1
+
 nix-env -iA \
   nixos.gitFull \
   nixos.curl \
