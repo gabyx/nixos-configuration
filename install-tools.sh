@@ -1,4 +1,3 @@
-
 #!/usr/bin/env bash
 # Some minimal tools to get you started in the VM
 
