@@ -33,11 +33,44 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  ### Temp Files ==============================================================
+  boot.tmp.useTmpfs = true;
+  boot.tmp.cleanOnBoot = true;
+  # ===========================================================================
+
   # Set your time zone.
   time.timeZone = "Europe/Zurich";
-
+  
+  ### Keyboard/Fonts Settings =================================================
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
+  services.xserver = {
+    layout = "programmer";
+    xkbVariant = "";
+    xkbOptions = "ctrl:swapcaps";
+    extraLayouts.programmer = {
+      description = "Programmer (US)";
+      languages = [ "eng" ];
+      symbolsFile = "./configs/keyboard/symbols/programmer";
+    };
+  };
+
+  console = {
+    keyMap = "programmer";
+    font = "JetBrainsMono Nerd Font";
+  };
+
+  # Fonts
+  fonts.fonts = with pkgs; [
+    corefonts
+    ubuntu_font_family
+    nerdfonts
+  ];
+  # ===========================================================================
+
+  ### Shell ===================================================================
+  programs.zsh.enable = true;
+  # ===========================================================================
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
