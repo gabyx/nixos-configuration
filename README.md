@@ -10,6 +10,15 @@ Also we want to build a
 [NixOS Installer](https://nixos.wiki/wiki/Creating_a_NixOS_live_CD) at then end
 out of the working NixOS.
 
+## Prerequisites
+
+Some key insights to ease understanding when working through the below NixOS
+install.
+
+- The configuration language `Nix` uses a basic type `String` (e.g. "this is a
+  string") and `Path` (`/this/is/a/path`) which are two different things and
+  treated differently.
+
 ## Install NixOS into QEMU Virtual Machine
 
 The documentation [NixOS Manual](https://nixos.org/manual/nixos/stable) provides
