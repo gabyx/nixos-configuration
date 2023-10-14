@@ -67,8 +67,11 @@
   fonts.fonts = with pkgs; [
     corefonts
     ubuntu_font_family
-    nerdfonts
+    fira
+    meslo-lgs-nf
+    (nerdfonts.override { fonts = [ "FiraCode", "JetBrainsMono" ]}
   ];
+
   # ===========================================================================
 
   ### Shell ===================================================================
