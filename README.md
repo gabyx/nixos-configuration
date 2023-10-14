@@ -25,11 +25,11 @@ useful information when going through these steps:
 
 ## Create VM with `virt-manager`
 
-2. Open `virt-manager` and create a new machine `nixos` by using the
+1. Open `virt-manager` and create a new machine `nixos` by using the
    [downloaded NixOS ISO file](https://channels.nixos.org/nixos-23.05/latest-nixos-gnome-x86_64-linux.iso).
    Create a virtual disk `nixos.qcow2` somewhere.
 
-3. Boot up the virtual machine `nixos` in `virt-manager`. The graphical
+1. Boot up the virtual machine `nixos` in `virt-manager`. The graphical
    installer should show up. Install NixOS by going through the
    [graphical installer](https://nixos.org/manual/nixos/stable/#sec-installation-graphical).
    Reboot after the install.
@@ -38,20 +38,28 @@ useful information when going through these steps:
 
 1. Create the VM by doing `create-vm.sh` and clicking through the installer.
 
-2. Start the virtual machine with [`start-vm.sh`](start-vm.sh).
+1. Start the virtual machine with [`start-vm.sh`](start-vm.sh).
 
 ### Install Base Tools
 
-3. Install base tools to start working on the `/etc/configuration.nix`:
-
-   ```shell
-   nix-env -iA git curl neovim wezterm tmux clang
-   ```
-
-4. Clone this repo
+1. Clone this repo
 
    ```shell
    git clone https://github.com/gabyx/nixos-configuration.git
    ```
 
+1. Install base tools to start working on the `/etc/configuration.nix`:
+
+   ```shell
+   ./install-tools.sh
+   ```
+
 ## Modify the Installation
+
+1. Modify the [`configuration.nix`](configuration.nix) in this repo and use
+
+   ```shell
+   nixos-rebuild -I nixos-config=~/nixos-configuration/configuration.nix test
+   ```
+
+   to make a new entry in the bootloader with the new system `test`.
