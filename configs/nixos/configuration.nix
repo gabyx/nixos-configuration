@@ -109,7 +109,7 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-  }
+  };
   # ===========================================================================
 
   # Enable touchpad support (enabled default in most desktopManager).
