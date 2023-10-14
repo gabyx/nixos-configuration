@@ -78,6 +78,10 @@
     nerdfonts
   ];
   # ===========================================================================
+
+  ### Shell ===================================================================
+  programs.zsh.enable = true
+  # ===========================================================================
   
   ### Networking ==============================================================
   networking.hostName = "gabyx-nixos"; # Define your hostname.
@@ -198,29 +202,31 @@
   environment.systemPackages = with pkgs; [
     # Basic
     autoconf
+    bash
     binutils
     coreutils-full
-    findutils
     curl
-    wget
     direnv
     dmidecode
     fd
     file
+    findutils
     fzf
     killall
-    ripgrep
-    ripgrep-all
+    libGL
+    libGLU 
+    lshw
     mkpasswd
     mlocate
-    lshw
     ncurses5
-    unzip
-    tar
-    libGLU 
-    libGL
-    pciutils
     openvpn
+    pciutils
+    ripgrep
+    ripgrep-all
+    tar
+    unzip
+    wget
+    zsh
     # Editors
     neovim-nightly
     vscode
