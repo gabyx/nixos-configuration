@@ -72,15 +72,29 @@ useful information when going through these steps:
 
 ## Resizing the _LUKS Encrypted_ Disk (if disk is full)
 
-1. On the host: Resize the `.qcow2` file with
+On the host do the following:
+
+1. Resize the `.qcow2` file with
 
    ```shell
    source .env-os
-   qemu-img resize "$NIXOS_DISK" +10G
+   qemu-img resize "$NIXOS_DISK" +40G
    ```
 
-1. Start the installer with `create-vm.sh` again.
-1. Once in the installer, run `gparted` and `Decrypt` the partition (right click
-   on it) and enter the password.
+1. Mount the disk with
+
+   ```shell
+   source .env-os
+   sudo qemu-nbd -c /dev/nbd0 "$NIXOS_DISK"
+   ```
+
+1. Run `gparted` with:
+
+   ```shell
+   gparted /dev/nbd0
+   ```
+
+   and right-click and run `Open Encryption` to decrypt the partition.
+
 1. Use `Partition -> Check` which does an automatic resize to fill the
    partition.
