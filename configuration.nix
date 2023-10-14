@@ -86,7 +86,7 @@
   ### Networking ==============================================================
   networking.hostName = "gabyx-nixos"; # Define your hostname.
   networking.networkmanager.enable = true;
-  networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
+  # networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
@@ -162,14 +162,13 @@
   ### Sound Settings ==========================================================
   # Enable sound.
   sound.enable = true;
-  hardware.pulseaudio.enable = true;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-  }
+  };
   # ===========================================================================
   
   # Enable touchpad support (enabled default in most desktopManager).
