@@ -8,5 +8,5 @@ DIR=$(cd "$(dirname "$0")" && pwd)
 
 export NIXPGKS_ALLOW_INSECURE=1
 
-sudo nixos-rebuild -I nixos-config=./configs/nixos/configuration.nix \
+sudo nixos-rebuild -I nixos-config=./configuration.nix \
   switch -p test

@@ -5,44 +5,32 @@
 { config, pkgs, ... }:
 
 {
-  nix = {
-    package = pkgs.nixUnstable;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-  };
-
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+      /etc/nixos/hardware-configuration.nix
     ];
 
   # Allow proprietary software (such as the NVIDIA drivers).
   nixpkgs.config.allowUnfree = true;
+ 
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-12.2.3"
+  ];
   
-  ### Bootloader ==============================================================
-  # Use the GRUB 2 boot loader.
+  # Bootloader.
   boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
-  boot.loader.grub.efiSupport = true;
+  boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
-  # boot.loader.grub.efiInstallAsRemovable = true;
-  # boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  # Define on which hard drive you want to install Grub.
-  boot.loader.grub.device = "nodev"; # or "nodev" for EFI only
 
-  # Crypto
-  boot.loader.grub.enableCryptodisk = true;
-  boot.initrd.secrets {
+  # Setup keyfile
+  boot.initrd.secrets = {
     "/crypto_keyfile.bin" = null;
-  }
-  boot.initrd.luks.devices."luks-<YOUR_GUID>".keyfile = "/crypto_keyfile.bin";
-  
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = false;
-  # Allowing to change the boot order.
-  boot.loader.efi.canTouchEfiVariables = true;
-  # ===========================================================================
+  };
+
+  boot.loader.grub.enableCryptodisk=true;
+
+  boot.initrd.luks.devices."luks-b71db585-62d5-4ab7-ac2b-f3a3495561ab".keyFile = "/crypto_keyfile.bin";
+
 
   ### Temp Files ==============================================================
   boot.tmp.useTmpfs = true;
@@ -58,17 +46,17 @@
   services.xserver = {
     layout = "programmer";
     xkbVariant = "";
-    xkbOptions = "ctrl:swapcaps";
+    xkbOptions = "caps:ctrl_modifier";
     extraLayouts.programmer = {
       description = "Programmer (US)";
       languages = [ "eng" ];
-      symbolsFile = "/home/nixos/nixos-configuration/configs/keyboard/symbols/programmer";
+      symbolsFile = ./configs/keyboard/symbols/programmer;
     };
   };
 
   console = {
-    keyMap = "programmer";
-    font = "JetBrainsMono Nerd Font";
+    keyMap = "us";
+    # font = "JetBrainsMono Nerd Font";
   };
 
   # Fonts
@@ -82,7 +70,7 @@
   ### Shell ===================================================================
   programs.zsh.enable = true;
   # ===========================================================================
-  
+
   ### Networking ==============================================================
   networking.hostName = "gabyx-nixos"; # Define your hostname.
   networking.networkmanager.enable = true;
@@ -92,73 +80,30 @@
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
-  networking.interfaces.enp4s0.useDHCP = true;
-  networking.interfaces.wlp3s0.useDHCP = true;
+  # networking.interfaces.enp4s0.useDHCP = true;
+  # networking.interfaces.wlp3s0.useDHCP = true;
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
   # ===========================================================================
 
-  ### Windowing (DisplayManager, DesktopManager, WindowManager)
-  # Enable the X windowing system.
+  # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.autorun = true;
 
-  # Enable the Gnome Display Manager.
-  services.xserver.displayManager.gdm.enable = true;
-  # Do not use X11, use Wayland.
-  services.xserver.displayManager.gdm.wayland = true;
-  # Enable the Gnome Desktop Manager.
-  services.xserver.desktopManager.gnome.enable = true;
-  
-  # Exclude some stupid gnome stuff.
-  environment.gnome.excludePackages = (with pkgs; [ 
-    gnome-photos, 
-    gnome-tour 
-  ])
-  # ===========================================================================
+  # Enable the XFCE Desktop Environment.
+  services.xserver.displayManager.lightdm.enable = true;
+  services.xserver.desktopManager.xfce.enable = true;
+  # Enable automatic login for the user.
+  services.xserver.displayManager.autoLogin.enable = true;
+  services.xserver.displayManager.autoLogin.user = "nixos";
 
-  ### Graphics Settings =======================================================
-  #services.xserver.videoDrivers = [ "nvidia" ];
-  # services.xserver.videoDrivers = [ "nouveau" ];
-  # hardware.opengl.driSupport32Bit = true;
-  # ===========================================================================
-
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true; # so that gtk works properly
-    extraPackages = with pkgs; [
-      swaylock
-      swayidle
-      wl-clipboard
-      wf-recorder
-      # Notification daemon
-      mako 
-      # Screenshots
-      grim
-      slurp
-      dmenu # Dmenu is the default in the config but i recommend wofi since its wayland native
-    ];
-    extraSessionCommands = ''
-      export SDL_VIDEODRIVER=wayland
-      export QT_QPA_PLATFORM=wayland
-      export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
-      export _JAVA_AWT_WM_NONREPARENTING=1
-      export MOZ_ENABLE_WAYLAND=1
-    '';
-  };
-
-  programs.waybar.enable = true;
-
-  # QT
-  programs.qt5ct.enable = true;
-  
   ### Printing ================================================================
   # Enable CUPS to print documents.
   services.printing.enable = true;
   # ===========================================================================
-  
+
   ### Sound Settings ==========================================================
   # Enable sound.
   sound.enable = true;
@@ -170,13 +115,13 @@
     pulse.enable = true;
   };
   # ===========================================================================
-  
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
   ### User Settings ==========================================================
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.gabyx = {
+  users.users.nixos = {
     isNormalUser = true;
     # Add libvirtd if using virt-manager
     extraGroups = [ 
@@ -193,7 +138,7 @@
       "davfs2" ];
   };
 
-  users.extraGroups.vboxusers.members = [ "gabyx" ];
+  users.extraGroups.vboxusers.members = [ "nixos" ];
   # ===========================================================================
 
   # List packages installed in system profile. To search, run:
@@ -251,16 +196,14 @@
     # Virtualisation
     docker
     docker-compose
-    dockertools
-    gnome3.dconf # Needed for saving settings in virt-manager
+    dconf # Needed for saving settings in virt-manager
     libguestfs # Needed to virt-sparsify qcow2 files
     libvirt
     spice # For automatic window resize if this conf is used as OS in VM
     spice-vdagent
     virt-manager
     # Programming
-    clang
-    clangd
+    llvmPackages_16.clang-unwrapped
     cmake
     gcc
     gdb
@@ -311,7 +254,7 @@
     nixpkgs-fmt
     nixfmt
   ];
-
+  
   nixpkgs.overlays = [
     (import (builtins.fetchTarball {
       url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
@@ -323,7 +266,7 @@
      };
    })
   ];
-  
+
   ### Program Settings ========================================================
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -336,7 +279,7 @@
   programs.git = {
     package = pkgs.gitFull;
     config.credential.helper = "libsecret";
-  }
+  };
   # ===========================================================================
   
   ### Virtualisation ==========================================================
@@ -364,16 +307,7 @@
   # virtualisation.virtualbox.host.enable = true;
   # virtualisation.virtualbox.host.enableExtensionPack = true;
   # ===========================================================================
-
-  ### Mounting ================================================================
-  # Mount extra drive
-  # fileSystems."/mnt/sdb1" = {
-  # device = "/dev/sdb1";
-  # fsType = "auto";
-  # options = [ "defaults" "user" "rw" "utf8" "noauto" "umask=000" ];
-  # };
-  # ===========================================================================
-
+  
   ### Services ================================================================
   # services.xrdp.enable = true;
   # services.xrdp.defaultWindowManager = "startplasma-x11";
@@ -386,6 +320,7 @@
       PasswordAuthentication = true;
     };
   };
+
   networking.firewall.allowedTCPPorts = [ 22 ];
   # ===========================================================================
 
