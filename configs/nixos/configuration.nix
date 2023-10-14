@@ -45,7 +45,7 @@
     extraLayouts.programmer = {
       description = "Programmer (US)";
       languages = [ "eng" ];
-      symbolsFile = "./configs/keyboard/symbols/programmer";
+      symbolsFile = "/home/nixos/nixos-configuration/configs/keyboard/symbols/programmer";
     };
   };
 
@@ -263,6 +263,7 @@
      };
    })
   ];
+
   ### Program Settings ========================================================
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
