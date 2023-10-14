@@ -80,7 +80,8 @@ useful information when going through these steps:
    nixos-rebuild -I nixos-config=~/nixos-configuration/configuration.nix switch -p test
    ```
 
-   to make a new entry in the bootloader with the new system `test`.
+   to make a new entry in the bootloader with the new system `test`. **We leave
+   the system initial `/etc/nixos/configuration.nix` untouched.**
 
 ## Resizing the _LUKS Encrypted_ Disk (if disk is full)
 
