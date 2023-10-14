@@ -9,14 +9,18 @@
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
     ];
-
-  # Allow proprietary software (such as the NVIDIA drivers).
+  
+  ### Nix Specific Settings ===================================================
+  nix.extraOptions = ''
+  extra-experimental-features = nix-command
+  ''
   nixpkgs.config.allowUnfree = true;
  
   nixpkgs.config.permittedInsecurePackages = [
     "electron-12.2.3"
   ];
-  
+  # ===========================================================================
+
   # Bootloader.
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
@@ -279,7 +283,9 @@
   programs.git = {
     enabled = true
     package = pkgs.gitFull;
-    config.credential.helper = "libsecret";
+    config = { 
+      credential.helper =  
+    };
   };
   # ===========================================================================
   
