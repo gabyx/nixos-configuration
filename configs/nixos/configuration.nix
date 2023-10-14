@@ -275,15 +275,14 @@
   boot.kernelModules = [ "kvm-amd" ];
 
   virtualisation.libvirtd = {
+    enable = true;
     qemuOvmf = true;
-  # VirtManager Settings
     qemuRunAsRoot = true;
     onBoot = "ignore";
     onShutdown = "shutdown";
   };
 
   # Docker
-    enable = true;
   virtualisation.docker.enable = true;
   virtualisation.docker.enableOnBoot = true;
 
