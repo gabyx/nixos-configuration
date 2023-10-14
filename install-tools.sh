@@ -10,6 +10,5 @@ set -u
 
 DIR=$(cd "$(dirname "$0")" && pwd)
 
-. "$DIR/.env"
-
+sudo git config --system credential.helper ""
 nix-env -iA git curl neovim wezterm tmux clang
