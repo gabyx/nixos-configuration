@@ -9,7 +9,7 @@ set -u
 
 DIR=$(cd "$(dirname "$0")" && pwd)
 
-. "$DIR/.env"
+. "$DIR/.env-os"
 
 /usr/bin/qemu-system-x86_64 \
 -enable-kvm \

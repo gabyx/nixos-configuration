@@ -21,7 +21,8 @@ useful information when going through these steps:
    sudo apt-get install virt-manager
    ```
 
-1. Adjust `.env` file for your variables.
+1. Adjust `.env` file from `.env.tmpl` for your variables.
+1. Adjust `.env-os` file from `.env-os.tmpl` for your variables.
 
 ## Create VM with `virt-manager`
 
