@@ -20,26 +20,6 @@
   # Allow proprietary software (such as the NVIDIA drivers).
   nixpkgs.config.allowUnfree = true;
   
-  # Set your time zone.
-  time.timeZone = "Europe/Zurich";
-  
-  ### Keyboard/Fonts Settings =======================================================
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-  services.xserver = {
-    layout = "us";
-    xkbVariant = "";
-  };
-  console = {
-    font = "JetBrainsMono Nerd Font";
-  };
-
-  # Fonts
-  fonts.fonts = with pkgs; [
-    nerdfonts
-  ];
-  # ===========================================================================
-
   ### Bootloader ==============================================================
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
@@ -62,6 +42,34 @@
   boot.loader.systemd-boot.enable = false;
   # Allowing to change the boot order.
   boot.loader.efi.canTouchEfiVariables = true;
+  # ===========================================================================
+
+  ### Temp Files ==============================================================
+  boot.tmp.useTmpfs = true;
+  boot.tmp.cleanOnBoot = true;
+  # ===========================================================================
+
+  # Set your time zone.
+  time.timeZone = "Europe/Zurich";
+  
+  ### Keyboard/Fonts Settings =================================================
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_US.UTF-8";
+  services.xserver = {
+    layout = "us";
+    xkbVariant = "";
+  };
+  console = {
+    keyMap = "us"
+    font = "JetBrainsMono Nerd Font";
+  };
+
+  # Fonts
+  fonts.fonts = with pkgs; [
+    corefonts
+    ubuntu_font_family
+    nerdfonts
+  ];
   # ===========================================================================
   
   ### Networking ==============================================================
