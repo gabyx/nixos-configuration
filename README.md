@@ -73,7 +73,7 @@ chezmoi apply
 1. Modify the [`configuration.nix`](configuration.nix) in this repo and use
 
    ```shell
-   nixos-rebuild -I nixos-config=~/nixos-configuration/configuration.nix test
+   nixos-rebuild -I nixos-config=~/nixos-configuration/configuration.nix switch -p test
    ```
 
    to make a new entry in the bootloader with the new system `test`.
