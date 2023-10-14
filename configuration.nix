@@ -12,8 +12,9 @@
   
   ### Nix Specific Settings ===================================================
   nix.extraOptions = ''
-  extra-experimental-features = nix-command
-  ''
+    extra-experimental-features = nix-command
+    '';
+
   nixpkgs.config.allowUnfree = true;
  
   nixpkgs.config.permittedInsecurePackages = [
@@ -285,11 +286,9 @@
   };
 
   programs.git = {
-    enabled = true
+    enable = true;
     package = pkgs.gitFull;
-    config = { 
-      credential.helper =  
-    };
+    config.credential.helper = "${pkgs.gitFull}/bin/git-credential-libsecret";
   };
   # ===========================================================================
   
