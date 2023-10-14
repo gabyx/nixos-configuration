@@ -45,6 +45,9 @@ useful information when going through these steps:
 1. Clone this repo
 
    ```shell
+   export NIXPGS_ALLOW_UNFREE=1
+   nix-env --install --attr nixos.git nixos.google-chrome
+
    git clone https://github.com/gabyx/nixos-configuration.git
    ```
 
@@ -53,6 +56,15 @@ useful information when going through these steps:
    ```shell
    ./install-tools.sh
    ```
+
+### Install User Configs
+
+I use `chezmoi` to install my user config on the machine. Do this
+
+```shell
+nix-env -iA nixos.chezmoi
+chezmoi init https://github.com/gabyx/chezmoi.git
+```
 
 ## Modify NixOS
 
