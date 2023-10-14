@@ -70,7 +70,7 @@
     ubuntu_font_family
     fira
     meslo-lgs-nf
-    (nerdfonts.override { fonts = [ "FiraCode", "JetBrainsMono" ]}
+    (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ];})
   ];
 
   # ===========================================================================
@@ -242,7 +242,7 @@
     redshift
     zoom-us
     firefox
-    chromium
+    google-chrome
     protonvpn-gui
     protonvpn-cli
     protonmail-bridge
@@ -288,7 +288,8 @@
   programs.git = {
     enable = true;
     package = pkgs.gitFull;
-    config.credential.helper = "${pkgs.gitFull}/bin/git-credential-libsecret";
+    ## TODO: Install GCM Core
+    config.credential.helper = "cache --timeout 72000"; # "${pkgs.gitFull}/bin/git-credential-libsecret";
   };
   # ===========================================================================
   
