@@ -222,7 +222,7 @@
     pciutils
     ripgrep
     ripgrep-all
-    tar
+    gnutar
     unzip
     wget
     zsh

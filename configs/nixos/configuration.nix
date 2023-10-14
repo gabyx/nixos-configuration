@@ -162,7 +162,7 @@
     pciutils
     ripgrep
     ripgrep-all
-    tar
+    gnutar
     unzip
     wget
     zsh
@@ -250,6 +250,18 @@
     stdenv.cc
     nixpkgs-fmt
     nixfmt
+  ];
+  
+  nixpkgs.overlays = [
+    (import (builtins.fetchTarball {
+      url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
+    }))
+    (self: super: {
+     neovim = super.neovim.override {
+       viAlias = true;
+       vimAlias = true;
+     };
+   })
   ];
   ### Program Settings ========================================================
   # Some programs need SUID wrappers, can be configured further or are
