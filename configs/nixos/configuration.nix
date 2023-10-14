@@ -191,7 +191,6 @@
     # Virtualisation
     docker
     docker-compose
-    dockertools
     gnome3.dconf # Needed for saving settings in virt-manager
     libguestfs # Needed to virt-sparsify qcow2 files
     libvirt
