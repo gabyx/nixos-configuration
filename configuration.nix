@@ -129,6 +129,7 @@
   ### User Settings ==========================================================
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.nixos = {
+    shell = pkgs.zsh;
     isNormalUser = true;
     # Add libvirtd if using virt-manager
     extraGroups = [ 
