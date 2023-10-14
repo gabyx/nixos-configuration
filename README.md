@@ -53,21 +53,12 @@ useful information when going through these steps:
    git clone https://github.com/gabyx/nixos-configuration.git
    ```
 
-1. Install base tools to start working on the `/etc/configuration.nix`:
+1. Install some base tools to start working in the fresh NixOS on the
+   `/etc/configuration.nix`:
 
    ```shell
    ./install-tools.sh
    ```
-
-### Install User Configs
-
-I use `chezmoi` to install my user config on the machine. Do this
-
-```shell
-nix-env -iA nixos.chezmoi
-chezmoi init https://github.com/gabyx/chezmoi.git
-chezmoi apply
-```
 
 ## Modify NixOS
 
