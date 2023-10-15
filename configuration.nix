@@ -11,37 +11,42 @@
     ];
   
   ### Nix Specific Settings ===================================================
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  # nix.nixPath = [ "nixos-config=./configuration.nix" ];
+  nix = {
+    settings = {
+      experimental-features = [ "nix-command" "flakes" ];
+      auto-optimise-store = true;
+    };
+  };
+
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [
     "electron-12.2.3"
   ];
   # ===========================================================================
 
-  # Bootloader.
+  # Bootloader ================================================================
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
+  # ===========================================================================
 
-  # Setup keyfile
+  # Encryption ================================================================
   boot.initrd.secrets = {
     "/crypto_keyfile.bin" = null;
   };
-
-  boot.loader.grub.enableCryptodisk=true;
-
+  boot.loader.grub.enableCryptodisk = true;
   boot.initrd.luks.devices."luks-b71db585-62d5-4ab7-ac2b-f3a3495561ab".keyFile = "/crypto_keyfile.bin";
-
+  # ===========================================================================
 
   ### Temp Files ==============================================================
   boot.tmp.useTmpfs = true;
   boot.tmp.cleanOnBoot = true;
   # ===========================================================================
 
-  # Set your time zone.
+  ### Time Zone ===============================================================
   time.timeZone = "Europe/Zurich";
-  
+  # ===========================================================================
+
   ### Keyboard/Fonts Settings =================================================
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -68,7 +73,6 @@
     meslo-lgs-nf
     (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ];})
   ];
-
   # ===========================================================================
 
   ### Shell ===================================================================
@@ -96,20 +100,41 @@
   services.xserver.enable = true;
   services.xserver.autorun = true;
 
-  # Enable Display Manager
-  # Use ligthdm
-  services.xserver.displayManager.lightdm.enable = true;
-  # or use Gnome Display Manager if you like. 
-  services.xserver.displayManager.gdm.enable = false;
+  # Enable the Plasma 5 Desktop Environment.
+  # services.xserver.displayManager.sddm.enable = true;
+  services.xserver.displayManager.gdm.enable = true;
   services.xserver.displayManager.gdm.wayland = true;
-  
-  # Desktop Manager
-  services.xserver.desktopManager.xfce.enable = true;
-  services.xserver.desktopManager.xfce.noDesktop = false;
-  # services.xserver.desktopManager.gnome.enable = false;
+  services.xserver.desktopManager.plasma5.enable = true;
 
-  # WindowManager
-  services.xserver.windowManager.i3.enable = true;
+  # Window Managers
+  #services.xserver.windowManager.stumpwm.enable = true;
+  #services.xserver.windowManager.ratpoison.enable = true;
+  #services.xserver.windowManager.exwm.enable = true;
+
+  programs.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true; # so that gtk works properly
+    extraPackages = with pkgs; [
+      swaylock
+      swayidle
+      wl-clipboard
+      wf-recorder
+      mako # notification daemon
+      grim
+      slurp
+      dmenu # Dmenu is the default in the config but i recommend wofi since its wayland native
+    ];
+    extraSessionCommands = ''
+      export SDL_VIDEODRIVER=wayland
+      export QT_QPA_PLATFORM=wayland
+      export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
+      export _JAVA_AWT_WM_NONREPARENTING=1
+      export MOZ_ENABLE_WAYLAND=1
+    '';
+  };
+  # security.polkit.enable = true; # https://discourse.nixos.org/t/sway-does-not-start/22354/5
+
+  programs.waybar.enable = true;
 
   # Enable automatic login for the user.
   services.xserver.displayManager.autoLogin.enable = false;
@@ -304,7 +329,7 @@
       config.credential.helper = "${pkgs.gitFull}/bin/git-credential-libsecret";
     };
 
-    seahorse.enable = true;
+    # seahorse.enable = true;
   };
   # ===========================================================================
   
@@ -336,6 +361,8 @@
   
   ### Services ================================================================
   services = {
+    dbus.enable = true;
+
     # Keyring Service
     gnome.gnome-keyring.enable = true;
 
