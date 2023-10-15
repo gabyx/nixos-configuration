@@ -173,6 +173,7 @@
     pciutils
     ripgrep
     ripgrep-all
+    gnome.seahorse
     gnutar
     unzip
     wget
@@ -276,17 +277,21 @@
   ### Program Settings ========================================================
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
-  programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
+  programs = {
+    mtr.enable = true;
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
 
-  programs.git = {
-    enable = true;
-    package = pkgs.gitFull;
-    ## TODO: Install GCM Core
-    config.credential.helper = "cache --timeout 72000"; # "${pkgs.gitFull}/bin/git-credential-libsecret";
+    git = {
+      enable = true;
+      package = pkgs.gitFull;
+      ## TODO: Install GCM Core
+      config.credential.helper = "${pkgs.gitFull}/bin/git-credential-libsecret";
+    };
+
+    seahorse.enable = true;
   };
   # ===========================================================================
   

@@ -65,9 +65,9 @@ useful information when going through these steps:
 1. Create the VM by doing `create-vm.sh` and clicking through the installer. Use
    an LUKS encrypted disk.
 
-1. Start the virtual machine with [`start-vm.sh`](start-vm.sh).
-
 ### Install Base Tools
+
+1. Start the virtual machine with [`start-vm.sh`](start-vm.sh).
 
 1. Clone this repo (we install git and google-chrome to access passwords)
 
@@ -83,6 +83,16 @@ useful information when going through these steps:
 
    ```shell
    ./install-tools.sh
+   ```
+
+## Connect to VM over SSH
+
+1. Start the virtual machine with [`start-vm.sh`](start-vm.sh).
+
+2. On the host inside a terminal connect over SSH with
+
+   ```shell
+   ssh nixos@127.0.0.1 -p 60022
    ```
 
 ## Modify NixOS
