@@ -323,15 +323,20 @@
   # ===========================================================================
   
   ### Services ================================================================
-  # services.xrdp.enable = true;
-  # services.xrdp.defaultWindowManager = "startplasma-x11";
-  # List services that you want to enable:
+  services = {
+    # Keyring Service
+    gnome.gnome-keyring.enable = true;
 
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    settings = {
-      PasswordAuthentication = true;
+    # services.xrdp.enable = true;
+    # services.xrdp.defaultWindowManager = "startplasma-x11";
+    # List services that you want to enable:
+
+    # Enable the OpenSSH daemon.
+    services.openssh = {
+      enable = true;
+      settings = {
+        PasswordAuthentication = true;
+      };
     };
   };
 
