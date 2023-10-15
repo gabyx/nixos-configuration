@@ -185,6 +185,7 @@
     # Tools
     gnome.gnome-tweaks
     dunst
+    delta
     etcher
     gparted
     kdiff3
