@@ -11,12 +11,9 @@
     ];
   
   ### Nix Specific Settings ===================================================
-  nix.extraOptions = ''
-    extra-experimental-features = nix-command
-    '';
-
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  # nix.nixPath = [ "nixos-config=./configuration.nix" ];
   nixpkgs.config.allowUnfree = true;
- 
   nixpkgs.config.permittedInsecurePackages = [
     "electron-12.2.3"
   ];
