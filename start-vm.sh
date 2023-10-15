@@ -23,6 +23,6 @@ DIR=$(cd "$(dirname "$0")" && pwd)
 -device virtio-net-pci,netdev=net0 \
 -vga qxl \
 -device AC97 \
--nic user,hostfwd=tcp::22-:22 \
+-nic user,hostfwd=tcp::60022-:22 \
 "$@"
 
