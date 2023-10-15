@@ -11,6 +11,9 @@ DIR=$(cd "$(dirname "$0")" && pwd)
 
 . "$DIR/.env-os"
 
+# Port Forwarding for SSH
+# with -nic user,hostfwd=tcp::60022-:22
+
 /usr/bin/qemu-system-x86_64 \
 -enable-kvm \
 -m 8G \
@@ -20,5 +23,6 @@ DIR=$(cd "$(dirname "$0")" && pwd)
 -device virtio-net-pci,netdev=net0 \
 -vga qxl \
 -device AC97 \
+-nic user,hostfwd=tcp::22-:22 \
 "$@"
 
