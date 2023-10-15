@@ -332,7 +332,7 @@
     # List services that you want to enable:
 
     # Enable the OpenSSH daemon.
-    services.openssh = {
+    openssh = {
       enable = true;
       settings = {
         PasswordAuthentication = true;
