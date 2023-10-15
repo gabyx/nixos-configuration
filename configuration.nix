@@ -58,7 +58,6 @@
 
   console = {
     keyMap = "us";
-    # font = "JetBrainsMono Nerd Font";
   };
 
   # Fonts
@@ -97,11 +96,23 @@
   services.xserver.enable = true;
   services.xserver.autorun = true;
 
-  # Enable the XFCE Desktop Environment.
+  # Enable Display Manager
+  # Use ligthdm
   services.xserver.displayManager.lightdm.enable = true;
+  # or use Gnome Display Manager if you like. 
+  services.xserver.displayManager.gdm.enable = false;
+  services.xserver.displayManager.gdm.wayland = true;
+  
+  # Desktop Manager
   services.xserver.desktopManager.xfce.enable = true;
+  services.xserver.desktopManager.xfce.noDesktop = false;
+  # services.xserver.desktopManager.gnome.enable = false;
+
+  # WindowManager
+  services.xserver.windowManager.i3.enable = true;
+
   # Enable automatic login for the user.
-  services.xserver.displayManager.autoLogin.enable = true;
+  services.xserver.displayManager.autoLogin.enable = false;
   services.xserver.displayManager.autoLogin.user = "nixos";
 
   ### Printing ================================================================
@@ -113,11 +124,11 @@
   # Enable sound.
   sound.enable = true;
   security.rtkit.enable = true;
+  hardware.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
+    pulse.enable = false;
   };
   # ===========================================================================
 
@@ -178,6 +189,7 @@
     unzip
     wget
     zsh
+    sway
     # Editors
     neovim-nightly
     vscode
