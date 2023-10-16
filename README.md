@@ -4,8 +4,7 @@
 The file [`configuration.nix`](configuration.nix) contains the whole NixOS
 configuration and will be used to install the complete system.
 
-We assume to be in Ubuntu. The following steps describe how to end up with a
-QEMU NixOS installation.
+The following steps describe how to end up with a QEMU NixOS installation.
 
 Also we want to build a
 [NixOS Installer](https://nixos.wiki/wiki/Creating_a_NixOS_live_CD) at then end
@@ -49,7 +48,8 @@ install.
 The documentation [NixOS Manual](https://nixos.org/manual/nixos/stable) provides
 useful information when going through these steps:
 
-1. Install `virt-manager` to create a QEMU virtual machine.
+1. Install `virt-manager` to create a QEMU virtual machine. On Debian systems
+   use:
 
    ```shell
    sudo apt-get install virt-manager
