@@ -86,7 +86,6 @@ useful information when going through these steps:
    ```shell
    export NIXPGS_ALLOW_UNFREE=1
    nix-env --install --attr nixos.git nixos.google-chrome
-
    git clone https://github.com/gabyx/nixos-configuration.git
    ```
 
