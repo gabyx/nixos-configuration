@@ -17,10 +17,11 @@
     git = {
       enable = true;
       package = pkgs.gitFull;
-      ## TODO: Install GCM Core
+
       config.credential.helper = "${pkgs.gitFull}/bin/git-credential-libsecret";
     };
-
+    
+    thunar.enable = true;
     seahorse.enable = true;
   };
   # ===========================================================================

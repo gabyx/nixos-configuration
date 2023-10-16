@@ -33,6 +33,11 @@ install.
 
   for package names and options.
 
+- The NixOS is using `sway` window manager. To get you started press when the VM
+  is booted up:
+  - `Alt+d` to start a program or
+  - press `Alt+Enter` to open `wezterm` terminal with `zsh`.
+
 ## Install NixOS into QEMU Virtual Machine
 
 The documentation [NixOS Manual](https://nixos.org/manual/nixos/stable) provides
@@ -89,7 +94,6 @@ useful information when going through these steps:
 ## Connect to VM over SSH
 
 1. Start the virtual machine with [`start-vm.sh`](start-vm.sh).
-
 2. On the host inside a terminal connect over SSH with
 
    ```shell
