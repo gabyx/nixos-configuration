@@ -14,6 +14,8 @@ out of the working NixOS.
 **Note: This setup is by far kick-ass, its more to get you started on an initial
 NixOS, which you then can drive further and even install on real hardware.**
 
+![Screenshot](./docs/screenshot.png)
+
 ## Prerequisites
 
 Some key insights to ease understanding when working through the below NixOS
@@ -23,8 +25,8 @@ install.
   string") and `Path` (`/this/is/a/path`) which are two different things and
   treated differently.
 
-- Check the manual from the top of
-  [NixOs](https://nixos.org/manual/nixos/stable).
+- Check out the manual [NixOs](https://nixos.org/manual/nixos/stable) when
+  searching for entry point documentation.
 
 - During modifications consult the two pages:
 
@@ -33,10 +35,14 @@ install.
 
   for package names and options.
 
-- The NixOS is using `sway` window manager. To get you started press when the VM
-  is booted up:
+- This NixOS is using the `sway` (Wayland not X11) window manager. To get you
+  started when the VM is booted up:
+
   - `Alt+d` to start a program or
   - press `Alt+Enter` to open `wezterm` terminal with `zsh`.
+
+- The NixOS install is customized with my `.`-files over `chezmoi` which are not
+  yet public. [Todo]
 
 ## Install NixOS into QEMU Virtual Machine
 
