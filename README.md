@@ -1,4 +1,5 @@
-# NixOS Installation
+<img src="https://raw.githubusercontent.com/NixOS/nixos-artwork/4c449b822779d9f3fca2e0eed36c95b07d623fd9/ng/out/nix.svg" style="margin-left: 20pt" align="right">
+<h1>NixOS Installation</h1>
 
 The file [`configuration.nix`](configuration.nix) contains the whole NixOS
 configuration and will be used to install the complete system.
@@ -137,3 +138,13 @@ fix. On the host do the following:
 
 1. Use `Partition -> Check` which does an automatic resize to fill the
    partition.
+
+## Running Root GUI Application in Sway
+
+See
+[documentation here](https://wiki.archlinux.org/title/Running_GUI_applications_as_root#Using_xhost).
+Running root application like `gparted` over `sway` must be done like that:
+
+```shell
+sudo -E gparted
+```
