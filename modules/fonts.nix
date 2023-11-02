@@ -6,7 +6,7 @@
     fontconfig.enable = true;
     fontDir.enable = true;
 
-    packages = with pkgs; [
+    fonts = with pkgs; [
       corefonts
       ubuntu_font_family
       fira

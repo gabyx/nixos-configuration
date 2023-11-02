@@ -2,14 +2,25 @@
 
 {
   boot = {
+    # Your `hardware-configuration.nix` should configure the LUKS device setup.
+    # It should not be included here.
+
     # Bootloader ================================================================
     loader = {
-      grub = { 
+      grub = {
         enable = true;
-        device = "nodev";
+        device = "nodev"; # The special value nodev means that a GRUB boot menu will be generated, but GRUB itself will not actually be installed. We use UEFI.
         useOSProber = false; # Do not detect other operating systems.
         efiSupport = true;
         enableCryptodisk = true;
+        extraEntries = ''
+          menuentry "Reboot" {
+            reboot
+          }
+          menuentry "Poweroff" {
+            halt
+          }
+        '';
       };
       efi = {
         canTouchEfiVariables = true;
@@ -17,15 +28,6 @@
     };
     # ===========================================================================
 
-    # Encryption ================================================================
-    initrd.luks.devices = {
-      root = {
-        device = "/dev/disk/by-uuid/1da45f3f-30b9-4d7e-8f81-4f4d945040ed";
-        preLVM = true;
-        allowDiscards = true;
-      };
-    };
-   # ===========================================================================
 
     ### Temp Files ==============================================================
     tmp.useTmpfs = true;

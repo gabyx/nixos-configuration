@@ -38,7 +38,6 @@
     vscode
     #
     # Tools
-    gnome.gnome-tweaks
     dunst
     delta
     etcher
@@ -50,7 +49,6 @@
     chezmoi
     silver-searcher
     appimage-run
-    sway
     #
     # Devices (Wacom)
     libwacom
@@ -114,9 +112,6 @@
     nixpkgs-fmt
     nixfmt
   ];
-
-  # Overrides
-
 
 
   # Install Neovim nightly if needed. Carefull with Astrovim Setup.
