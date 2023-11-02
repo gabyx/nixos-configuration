@@ -3,12 +3,17 @@
 {
   boot = {
     # Bootloader ================================================================
-    loader.grub = { 
-      enable = true;
-      device = "/dev/sda";
-      useOSProber = false; # Do not detect other operating systems.
-      efiSupport = true;
-      enableCryptodisk = true;
+    loader = {
+      grub = { 
+        enable = true;
+        device = "/dev/sda";
+        useOSProber = false; # Do not detect other operating systems.
+        efiSupport = true;
+        enableCryptodisk = true;
+      };
+      efi = {
+        canTouchEfiVariables = true;
+      };
     };
     # ===========================================================================
 
