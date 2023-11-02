@@ -48,7 +48,7 @@
   security.polkit.enable = true; # https://discourse.nixos.org/t/sway-does-not-start/22354/5
 
   programs.waybar.enable = true;
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     noto-fonts
     font-awesome
   ];
