@@ -25,15 +25,16 @@
     ncurses5
     openvpn
     pciutils
-    ripgrep
-    ripgrep-all
+    (pkgs.ripgrep-all.overrideAttrs (old: { 
+    	doInstallCheck = false; 
+    })) 
     gnome.seahorse
     gnutar
     unzip
     wget
     zsh
     # Editors
-    neovim-nightly
+    neovim
     vscode
     #
     # Tools
@@ -113,16 +114,21 @@
     nixpkgs-fmt
     nixfmt
   ];
-  
-  nixpkgs.overlays = [
-    (import (builtins.fetchTarball {
-      url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
-    }))
-    (self: super: {
-     neovim = super.neovim.override {
-       viAlias = true;
-       vimAlias = true;
-     };
-   })
-  ];
+
+  # Overrides
+
+
+
+  # Install Neovim nightly if needed. Carefull with Astrovim Setup.
+  # nixpkgs.overlays = [
+  #   (import (builtins.fetchTarball {
+  #     url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
+  #   }))
+  #   (self: super: {
+  #    neovim = super.neovim.override {
+  #      viAlias = true;
+  #      vimAlias = true;
+  #    };
+  #  })
+  # ];
 }

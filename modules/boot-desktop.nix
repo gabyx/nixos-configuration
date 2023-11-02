@@ -6,7 +6,7 @@
     loader.grub = { 
       enable = true;
       device = "/dev/sdc";
-      useOSProber = true;
+      useOSProber = false; # Do not detect other operating systems.
       efiSupport = true;
       enableCryptodisk = true;
     };
