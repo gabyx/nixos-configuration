@@ -8,8 +8,8 @@
         enable = true;
         device = "/dev/sda";
         useOSProber = false; # Do not detect other operating systems.
-        efiSupport = true;
-        enableCryptodisk = true;
+        # efiSupport = true;
+        # enableCryptodisk = true;
       };
       efi = {
         canTouchEfiVariables = true;
