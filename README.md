@@ -109,7 +109,7 @@ useful information when going through these steps:
 1. Modify the [`configuration.nix`](configuration.nix) in this repo and use
 
    ```shell
-   ./rebuild-nixos.sh
+   ./rebuild-nixos.sh switch
    ```
 
    to make a new entry in the bootloader with the new system `test`. **We leave
@@ -119,7 +119,7 @@ useful information when going through these steps:
 
 ## Resizing the _LUKS Encrypted_ Disk (if disk is full)
 
-If `nixos-rebuild` fails due to too little disk space, use the following easy
+If `nixos-rebuild switch` fails due to too little disk space, use the following easy
 fix. On the host do the following:
 
 1. Resize the `.qcow2` file with

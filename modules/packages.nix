@@ -25,9 +25,10 @@
     ncurses5
     openvpn
     pciutils
-    (pkgs.ripgrep-all.overrideAttrs (old: { 
-    	doInstallCheck = false; 
-    })) 
+    ripgrep
+    # (pkgs.ripgrep-all.overrideAttrs (old: { 
+    # 	doInstallCheck = false; 
+    # })) 
     gnome.seahorse
     gnutar
     unzip

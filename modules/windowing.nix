@@ -1,22 +1,25 @@
 
-{ config, pkgs, ... }:
+{ config, pkgs, ... }: {
 
-{
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.autorun = true;
-
+  
   # Display Manager
-  # services.xserver.displayManager.sddm.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.wayland = true;
+  services.xserver.displayManager = { 
+    sddm.enable = false;
+    gdm = { enable = true; wayland = true; };
+    autoLogin.enable = false;
+    autoLogin.user = "nixos";
+  };
 
   # Desktop Manager
   # They interfere with the Window Manager.
-  # services.xserver.desktopManager.plasma5.enable = true;
+  services.xserver.desktopManager.xfce.enable = true;
 
   # Hyprland Window Manager ===================================================
   programs.hyprland.enable = true;
+
+  # Useful packages.
   environment.systemPackages = with pkgs; [
     (
       waybar.overrideAttrs (oldAttrs: {
@@ -79,7 +82,4 @@
     font-awesome
   ];
 
-  # Enable automatic login for the user.
-  services.xserver.displayManager.autoLogin.enable = false;
-  services.xserver.displayManager.autoLogin.user = "nixos";
 }

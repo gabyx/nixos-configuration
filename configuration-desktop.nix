@@ -15,7 +15,7 @@
 
       ./modules/windowing.nix
       ./modules/display.nix
-      ./modules/display-resolution.nix
+      # ./modules/display-resolution.nix
       ./modules/keyboard.nix
 
       ./modules/fonts.nix

@@ -8,7 +8,7 @@
     };
     extraOptions = ''
     experimental-features = nix-command flakes
-    use-xdg-base-directories = true
+    # use-xgd-base-directories = true
     '';
   };
 
@@ -18,8 +18,7 @@
       permittedInsecurePackages = [
         "electron-12.2.3"
         "electron-19.1.9"
-      ];
-    };
+      ]; };
   };
   # ===========================================================================
 }
