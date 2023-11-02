@@ -3,12 +3,13 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
+  services.xserver.autorun = true;
   
   # Display Manager
   services.xserver.displayManager = { 
     sddm.enable = false;
     gdm = { enable = true; wayland = true; };
-    autoLogin.enable = false;
+    autoLogin.enable = true;
     autoLogin.user = "nixos";
   };
 
