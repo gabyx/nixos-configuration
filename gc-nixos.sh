@@ -5,4 +5,8 @@ set -u
 DIR=$(cd "$(dirname "$0")" && pwd)
 . "$DIR/.env"
 
-nix-env --delete-generations --profile /nix/var/nix/profiles/system-profiles/test "*"
+# Reduce the test generations down to one.
+nix-env --delete-generations --profile /nix/var/nix/profiles/system-profiles/test +1
+
+# Run garbage collection, but not deleting generations `-d`
+sudo nix-collect-garbage
