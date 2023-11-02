@@ -46,11 +46,11 @@
   # Handle desktop interaction.
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs. xdg-desktop-portal-hyprland ];
+    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
   };
   
   # Sessions variables
-  home.sessionVariables = {
+   environment.sessionVariables = {
     CLUTTER_BACKEND = "wayland";
 
     WLR_NO_HARDWARE_CURSORS = "1";
