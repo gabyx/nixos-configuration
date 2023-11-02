@@ -84,8 +84,7 @@ useful information when going through these steps:
 1. Clone this repo (we install git and google-chrome to access passwords)
 
    ```shell
-   export NIXPGS_ALLOW_UNFREE=1
-   nix-env --install --attr nixos.git nixos.google-chrome
+   NIXPGS_ALLOW_UNFREE=1 nix-env --install --attr nixos.git nixos.google-chrome
    git clone https://github.com/gabyx/nixos-configuration.git
    ```
 
