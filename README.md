@@ -109,17 +109,21 @@ useful information when going through these steps:
 1. Modify the [`configuration.nix`](configuration.nix) in this repo and use
 
    ```shell
-   ./rebuild-nixos.sh switch
+   ./rebuild-nixos.sh [boot|switch] [--force] vm
    ```
 
-   to make a new entry in the bootloader with the new system `test`. **We leave
-   the system initial `/etc/nixos/configuration.nix` untouched.**
+   Use `boot` to build the NixOS (a new generation) and add a new entry in the
+   bootloader with the profile `test` and use `switch` to switch live to the new
+   generation to it and make it the boot default. Use `--force` to make a new
+   generation for the system profile and not `test`.
+
+   **We leave the system initial `/etc/nixos/configuration.nix` untouched.**
 
    **Note: Make sure you use your disk id in `boot.initrd.luks.devices`.**
 
 ## Resizing the _LUKS Encrypted_ Disk (if disk is full)
 
-If `nixos-rebuild switch` fails due to too little disk space, use the following easy
+If `nixos-rebuild` fails due to too little disk space, use the following easy
 fix. On the host do the following:
 
 1. Resize the `.qcow2` file with
