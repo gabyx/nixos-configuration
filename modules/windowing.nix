@@ -22,6 +22,8 @@
 
   # Useful packages.
   environment.systemPackages = with pkgs; [
+    hyprland
+    
     (
       waybar.overrideAttrs (oldAttrs: {
         mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
