@@ -11,7 +11,7 @@ type="${1?Define 'switch' or 'boot'}" && shift
 force="false"
 [ "${1:-}" = "--force" ] && force="true" && shift
 
-config="vm"
+config="-vm"
 [ -n "${1:-}" ] && config="-$1" && shift
 
 export NIXPGKS_ALLOW_INSECURE=1
