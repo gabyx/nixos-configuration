@@ -50,7 +50,7 @@
   };
   
   # Sessions variables
-   environment.sessionVariables = {
+  environment.sessionVariables = {
     CLUTTER_BACKEND = "wayland";
 
     WLR_NO_HARDWARE_CURSORS = "1";
