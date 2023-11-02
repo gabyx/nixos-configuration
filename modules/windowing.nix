@@ -15,7 +15,7 @@
 
   # Desktop Manager
   # They interfere with the Window Manager.
-  services.xserver.desktopManager.xfce.enable = true;
+  # services.xserver.desktopManager.xfce.enable = true;
 
   # Hyprland Window Manager ===================================================
   programs.hyprland.enable = true;
