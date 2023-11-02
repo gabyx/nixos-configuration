@@ -9,7 +9,7 @@
   services.xserver.displayManager = { 
     sddm.enable = false;
     gdm = { enable = true; wayland = true; };
-    autoLogin.enable = true;
+    autoLogin.enable = false;
     autoLogin.user = "nixos";
   };
 
