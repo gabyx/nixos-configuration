@@ -19,6 +19,7 @@
 
   # Hyprland Window Manager ===================================================
   programs.hyprland.enable = true;
+  programs.xwayland.enable = true; # Bridge to Wayland API for X11 apps.
 
   # Useful packages.
   environment.systemPackages = with pkgs; [
@@ -46,6 +47,19 @@
   xdg.portal = {
     enable = true;
     extraPortals = [ pkgs. xdg-desktop-portal-hyprland ];
+  };
+  
+  # Sessions variables
+  home.sessionVariables = {
+    CLUTTER_BACKEND = "wayland";
+
+    WLR_NO_HARDWARE_CURSORS = "1";
+    WLR_RENDERER_ALLOW_SOFTWARE = "1";
+    WLR_RENDERER = "vulkan";
+
+    XDG_CURRENT_DESKTOP = "Hyprland";
+    XDG_SESSION_DESKTOP = "Hyprland";
+    XDG_SESSION_TYPE = "wayland";
   };
   # ===========================================================================
   
