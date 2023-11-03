@@ -5,22 +5,36 @@
   services.xserver.enable = true;
   services.xserver.autorun = true;
   
-  # Display Manager
+  # Display Manager ===========================================================
   services.xserver.displayManager = { 
     sddm.enable = false;
     gdm = { enable = true; wayland = true; };
     autoLogin.enable = false;
     autoLogin.user = "nixos";
   };
+  # ===========================================================================
 
-  # Desktop Manager
+  # Desktop Manager ===========================================================
   # They interfere with the Window Manager.
   # services.xserver.desktopManager.xfce.enable = true;
+  # ===========================================================================
 
   # Hyprland Window Manager ===================================================
-  programs.hyprland.enable = true;
-  programs.xwayland.enable = true; # Bridge to Wayland API for X11 apps.
-
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true; # Bridge to Wayland API for X11 apps.
+  };
+  
+  hardware = {
+    opengl.enable = true;
+  };
+  
+  # Handle desktop interaction.
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+  };
+  
   # Useful packages.
   environment.systemPackages = with pkgs; [
     hyprland
@@ -37,21 +51,19 @@
     swww # Wallpaper daemon for wayland. 
 
     rofi-wayland # Window switcher.
+    networkmanagerapplet # Networkmanager applet.
 
     grim # Screenshot in Wayland.
     slurp # Wayland region selector.
     playerctl # Player control in waybar.
   ];
-  
-  # Handle desktop interaction.
-  xdg.portal = {
-    enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
-  };
-  
+
   # Sessions variables
   environment.sessionVariables = {
+    # Clutter based apps.
     CLUTTER_BACKEND = "wayland";
+    # Hint electron apps to use wayland.
+    NIXOS_OZONE_WL = "1"
 
     WLR_NO_HARDWARE_CURSORS = "1";
     WLR_RENDERER_ALLOW_SOFTWARE = "1";
