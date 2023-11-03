@@ -9,13 +9,6 @@
     fonts = with pkgs; [
       corefonts
       ubuntu_font_family
-  
-      # Waybar
-      font-awesome
-      cantarell-fonts
-      noto-fonts
-      noto-fonts-emoji
-
       fira
       meslo-lgs-nf
       (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ];})
