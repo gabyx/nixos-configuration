@@ -63,7 +63,7 @@
     # Clutter based apps.
     CLUTTER_BACKEND = "wayland";
     # Hint electron apps to use wayland.
-    NIXOS_OZONE_WL = "1"
+    NIXOS_OZONE_WL = "1";
 
     WLR_NO_HARDWARE_CURSORS = "1";
     WLR_RENDERER_ALLOW_SOFTWARE = "1";
