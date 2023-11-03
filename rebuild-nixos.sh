@@ -6,7 +6,7 @@ DIR=$(cd "$(dirname "$0")" && pwd)
 . "$DIR/.env"
 
 type="not-defined"
-type="${1?Define 'switch' or 'boot'}" && shift
+type="${1}" && shift
 
 force="false"
 [ "${1:-}" = "--force" ] && force="true" && shift
