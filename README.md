@@ -174,7 +174,7 @@ sudo btrfs subvolume create /mnt/swap
 sudo btrfs filesystem mkswapfile --size 72g --uuid clear /mnt/swap/swapfile
 
 sudo btrfs subvolume snapshot -r /mnt/root /mnt/root-blank
-umount /mnt
+sudo umount /mnt
 ```
 
 Above we also created an empty snapshot of the root volume. 
@@ -277,7 +277,14 @@ Finally clone this repo into `/mnt/persist`:
 ```shell
 NIXPGS_ALLOW_UNFREE=1 nix-env --install --attr nixos.git
 mkdir -p /mnt/persist/repos
-git clone https://github.com/gabyx/nixos-configuration.git /mnt/persist/repos/nixos-configuration
+sudo chown -R nixos:users /mnt/persist/repos
+sudo git clone https://github.com/gabyx/nixos-configuration.git /mnt/persist/repos/nixos-configuration
+```
+
+and copy the hardware configuration to the repo for the installation:
+
+```shell
+cp /mnt/etc/nixos/hardware-configuration.nix /mnt/persist/repos/nixos-configuration/modules/hardware/desktop.nix
 ```
 
 and **finally run the install command** by doing:
