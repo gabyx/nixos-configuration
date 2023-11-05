@@ -6,7 +6,8 @@
     users.nixos = {
       shell = pkgs.zsh;
       useDefaultShell = false;
-
+      
+      initialPassword = "nixos";
       isNormalUser = true;
 
       extraGroups = [ 
