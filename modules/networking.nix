@@ -25,4 +25,9 @@
     # firewall.allowedUDPPorts = [ ... ];
     # ===========================================================================
   };
+
+  environment.systemPackages = with pkgs; [
+    wirelesstools
+  ];
+
 }
