@@ -143,23 +143,56 @@ We can now set up the encrypted LUKS partition and open it using cryptsetup
 sudo cryptsetup luksFormat ${MYDISK}2
 sudo cryptsetup luksOpen ${MYDISK}2 enc-physical-vol
 ```
+Format the partitions with:
 
-We create 3 logical volumes:
-- a swap partition with (100% + `sqrt(100%)) of ram at the end
-- a system parition for `/`
-- a partition for `/home` (optional)
-- a data partition (optional)
-
-We are not using the optional partitions so far. We create the volumes with:
-
-```shell
-sudo pvcreate /dev/mapper/enc-physical-vol
-sudo vgcreate vg /dev/mapper/enc-physical-vol
-sudo lvcreate -L 72G -n swap vg
-sudo lvcreate -l '100%FREE' -n root vg
+```
+sudo mkfs.fat -F 32 ${MYDISK}1
+sudo mkfs.btrfs /dev/mapper/env-physical-vol
 ```
 
-Check the volumes by using `sudo lvdisplay vg`.
+Create subvolumes as follows:
+
+- `root`: The subvolume for `/`, which will be cleared on every boot.
+- `home`: The subvolume for `/home`, which should be backed up.
+- `nix`: The subvolume for `/nix`, which needs to be persistent but is not worth backing up, as it’s trivial to reconstruct.
+- `persist`: The subvolume for `/persist`, containing system state which should be persistent across reboots and possibly backed up.
+- `log`: The subvolume for `/var/log`. I’m not so interested in backing up logs but I want them to be preserved across reboots, so I’m dedicating a subvolume to logs rather than using the persist subvolume.
+
+```shell
+sudo mount -t btrfs /dev/mapper/enc-physical-vol /mnt
+sudo btrfs subvolume create /mnt/root
+sudo btrfs subvolume create /mnt/home
+sudo btrfs subvolume create /mnt/nix
+sudo btrfs subvolume create /mnt/persist
+sudo btrfs subvolume create /mnt/log
+
+sudo btrfs subvolume snapshot -r /mnt/root /mnt/root-blank
+```
+
+Above we also created an empty snapshot of the root volume 
+
+### Installing NixOS
+
+The partitions just created have to be mounted, e.g. to `/mnt` so we can install NixOS on them.
+At this point activating the swap (if you created one) is a good idea. 
+The `/boot` partion is mounted in a new folder `/mnt/boot` inside the root partition.
+
+```shell
+sudo mount /dev/vg/root /mnt
+sudo mkdir /mnt/boot
+sudo mount /dev/sda1 /mnt/boot
+sudo swapon /dev/vg/swap
+```
+
+Now we are going to install this repo's NixOs configuration. For that we clone it
+into out future user home folder (you can install is anywhere you want):
+
+```shell
+USER=gabyx
+NIXPGS_ALLOW_UNFREE=1 nix-env --install --attr nixos.git
+sudo mkdir -p /mnt/home/$USER
+git clone https://github.com/gabyx/nixos-configuration.git /mnt/home/$USER/.nixos-configuration
+```
 
 ## Modify NixOS
 
