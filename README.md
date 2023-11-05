@@ -1,6 +1,8 @@
 <img src="https://raw.githubusercontent.com/NixOS/nixos-artwork/4c449b822779d9f3fca2e0eed36c95b07d623fd9/ng/out/nix.svg" style="margin-left: 20pt" align="right">
 <h1>NixOS Installation</h1>
 
+**Archived: The new place is [here](https://github.com/gabyx/dotfiles).**
+
 The file [`configuration.nix`](configuration.nix) contains the whole NixOS
 configuration and will be used to install the complete system.
 
@@ -103,28 +105,36 @@ useful information when going through these steps:
    ```shell
    ssh nixos@127.0.0.1 -p 60022
    ```
+
 ## Install NixOs on Desktop Hardware
 
-We follow the tutorial from [Pablo Ovelleiro [@pinpox](https://github.com/pinpox)](https://pablo.tools/blog/computers/nixos-encrypted-install) and [mt-caret](https://mt-caret.github.io/blog/posts/2020-06-29-optin-state.html).
+We follow the tutorial from
+[Pablo Ovelleiro [@pinpox](https://github.com/pinpox)](https://pablo.tools/blog/computers/nixos-encrypted-install)
+and
+[mt-caret](https://mt-caret.github.io/blog/posts/2020-06-29-optin-state.html).
 
 Boot the NixOS ISO installer of the flashed USB.
 
 ### Partioning
 
-Partitioning in NixOS is manual and mostly the same as you would do in Arch or any other "minimal" distribution. You can use gparted if you decided to boot the graphical installer, but I find the process simpler with good-old `gdisk`.
+Partitioning in NixOS is manual and mostly the same as you would do in Arch or
+any other "minimal" distribution. You can use gparted if you decided to boot the
+graphical installer, but I find the process simpler with good-old `gdisk`.
 
 We will be creating two partitions:
 
 - EFI partition (500M)
-- Encrypted physical volume for [LVM](https://de.wikipedia.org/wiki/Logical_Volume_Manager) (remaining space)
+- Encrypted physical volume for
+  [LVM](https://de.wikipedia.org/wiki/Logical_Volume_Manager) (remaining space)
 
-Furthermore, LVM will be used inside the encrypted physical volume and 
-I will be adding (100% + `sqrt(100%)) of my ram as a swap partition (e.g. 64GB = 72GB) if we want proper
-hibernation. 
-For the thoroughly-paranoid this has the added benefit, that the swap partition will also be encrypted.
+Furthermore, LVM will be used inside the encrypted physical volume and I will be
+adding (100% + `sqrt(100%)) of my ram as a swap partition (e.g. 64GB = 72GB) if
+we want proper hibernation. For the thoroughly-paranoid this has the added
+benefit, that the swap partition will also be encrypted.
 
-Assuming the drive you want to install to is `/dev/sda`, run `gdisk` and create the partitions:
-To not make mistakes run the following in the terminal (**replace the disk**):
+Assuming the drive you want to install to is `/dev/sda`, run `gdisk` and create
+the partitions: To not make mistakes run the following in the terminal
+(**replace the disk**):
 
 ```shell
 MYDISK=/dev/sda
@@ -133,10 +143,12 @@ gdisk $MYDISK
 
 Then do the following:
 
-  - `o` : Create empty gpt partition table.
-  - `n` : Add partition, first sector: default, last sector: +500M, type ef00 EFI (this is `/dev/sda1`).
-  - `n` : Add partition, remaining space, type 8e00 Linux LVM (this is  `/dev/sda2`).
-  - `w` : Write partition table and exit.
+- `o` : Create empty gpt partition table.
+- `n` : Add partition, first sector: default, last sector: +500M, type ef00 EFI
+  (this is `/dev/sda1`).
+- `n` : Add partition, remaining space, type 8e00 Linux LVM (this is
+  `/dev/sda2`).
+- `w` : Write partition table and exit.
 
 We can now set up the encrypted LUKS partition and open it using cryptsetup
 
@@ -144,6 +156,7 @@ We can now set up the encrypted LUKS partition and open it using cryptsetup
 sudo cryptsetup luksFormat ${MYDISK}2
 sudo cryptsetup luksOpen ${MYDISK}2 enc-physical-vol
 ```
+
 Format the partitions with:
 
 ```
@@ -156,9 +169,13 @@ Create subvolumes as follows:
 
 - `root`: The subvolume for `/`, which will be cleared on every boot.
 - `home`: The subvolume for `/home`, which should be backed up.
-- `nix`: The subvolume for `/nix`, which needs to be persistent but is not worth backing up, as it’s trivial to reconstruct.
-- `persist`: The subvolume for `/persist`, containing system state which should be persistent across reboots and possibly backed up.
-- `log`: The subvolume for `/var/log`. I’m not so interested in backing up logs but I want them to be preserved across reboots, so I’m dedicating a subvolume to logs rather than using the persist subvolume.
+- `nix`: The subvolume for `/nix`, which needs to be persistent but is not worth
+  backing up, as it’s trivial to reconstruct.
+- `persist`: The subvolume for `/persist`, containing system state which should
+  be persistent across reboots and possibly backed up.
+- `log`: The subvolume for `/var/log`. I’m not so interested in backing up logs
+  but I want them to be preserved across reboots, so I’m dedicating a subvolume
+  to logs rather than using the persist subvolume.
 - `swap`: A swap volume which is also encrypted because we are paranoid.
 
 ```shell
@@ -177,14 +194,15 @@ sudo btrfs subvolume snapshot -r /mnt/root /mnt/root-blank
 sudo umount /mnt
 ```
 
-Above we also created an empty snapshot of the root volume. 
-Later we might use it to reset to it when booting.
+Above we also created an empty snapshot of the root volume. Later we might use
+it to reset to it when booting.
 
 ### Installing NixOS
 
-The partitions just created have to be mounted, e.g. to `/mnt` so we can install NixOS on them.
-At this point activating the swap (if you created one) is a good idea. 
-The `/boot` partion is mounted in a new folder `/mnt/boot` inside the root partition.
+The partitions just created have to be mounted, e.g. to `/mnt` so we can install
+NixOS on them. At this point activating the swap (if you created one) is a good
+idea. The `/boot` partion is mounted in a new folder `/mnt/boot` inside the root
+partition.
 
 Mount all filesystems by doing:
 
@@ -222,8 +240,9 @@ Then, let NixOS figure out the hardware config:
 sudo nixos-generate-config --root /mnt
 ```
 
-which will generate two files `/mnt/etc/nixos/hardware-configuration.nix` and a default NixOs configuration
-as `/mnt/etc/nixos/configuration.nix` (which we will not use to install our system).
+which will generate two files `/mnt/etc/nixos/hardware-configuration.nix` and a
+default NixOs configuration as `/mnt/etc/nixos/configuration.nix` (which we will
+not use to install our system).
 
 Now your hardware configuration should contain the following:
 
