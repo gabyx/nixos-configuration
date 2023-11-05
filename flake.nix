@@ -17,7 +17,7 @@
       };
     in
     {
-      nixosConfiguration = {
+      nixosConfigurations = {
 	# The NixOs for the virtual machine.
 	vm = nixpkgs.lib.nixosSystem {
 	  specialArgs = { inherit system; };

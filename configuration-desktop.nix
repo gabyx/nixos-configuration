@@ -8,7 +8,7 @@
   imports =
     [ 
       # Include the results of the hardware scan.
-      /etc/nixos/hardware-configuration.nix
+      ./modules/hardware/desktop.nix
       
       # Include all other specifications.
       ./modules/boot-desktop.nix
