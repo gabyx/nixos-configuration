@@ -7,7 +7,7 @@
       "/run/current-system/sw/bin/zsh"
     ];
 
-    sessionVariabels = {
+    sessionVariables = {
       TERMINAL = "wezterm";
       EDITOR = "nvim";
     };
