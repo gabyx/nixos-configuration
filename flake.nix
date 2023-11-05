@@ -20,7 +20,7 @@
       nixosConfiguration = {
 	# The NixOs for the virtual machine.
 	vm = nixpkgs.lib.nixosSystem {
-	  specialArgs = { inherit system };
+	  specialArgs = { inherit system; };
 	  modules = [
 	    ./configuration-vm.nix
 	  ];
@@ -28,7 +28,7 @@
 	
 	# The NixOs running on bare metal.
 	desktop = nixpkgs.lib.nixosSystem {
-	  specialArgs = { inherit system };
+	  specialArgs = { inherit system; };
 	  modules = [
 	    ./configuration-desktop.nix
 	  ];
