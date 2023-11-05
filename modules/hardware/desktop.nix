@@ -14,7 +14,7 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/a9504076-ec13-41e9-adb6-5385eb464a9f";
+    { device = "/dev/disk/by-uuid/7d77bcf2-d5f4-4ff4-992d-de583df23032";
       fsType = "btrfs";
       options = [ "subvol=root" "compress=zstd" "noatime" ];
     };
@@ -22,37 +22,41 @@
   boot.initrd.luks.devices."enc-physical-vol".device = "/dev/disk/by-uuid/9cfdf03f-6872-499d-afd4-78fd74bd2e6b";
 
   fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/a9504076-ec13-41e9-adb6-5385eb464a9f";
+    { device = "/dev/disk/by-uuid/7d77bcf2-d5f4-4ff4-992d-de583df23032";
       fsType = "btrfs";
       options = [ "subvol=home" "compress=zstd" "noatime" ];
     };
 
   fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/a9504076-ec13-41e9-adb6-5385eb464a9f";
+    { device = "/dev/disk/by-uuid/7d77bcf2-d5f4-4ff4-992d-de583df23032";
       fsType = "btrfs";
       options = [ "subvol=nix" "compress=zstd" "noatime" ];
     };
 
   fileSystems."/persist" =
-    { device = "/dev/disk/by-uuid/a9504076-ec13-41e9-adb6-5385eb464a9f";
+    { device = "/dev/disk/by-uuid/7d77bcf2-d5f4-4ff4-992d-de583df23032";
       fsType = "btrfs";
       options = [ "subvol=persist" "compress=zstd" "noatime" ];
     };
 
   fileSystems."/var/log" =
-    { device = "/dev/disk/by-uuid/a9504076-ec13-41e9-adb6-5385eb464a9f";
+    { device = "/dev/disk/by-uuid/7d77bcf2-d5f4-4ff4-992d-de583df23032";
       fsType = "btrfs";
       options = [ "subvol=log" "compress=zstd" "noatime" ];
       neededForBoot = true;
     };
 
   fileSystems."/swap" =
-    { device = "/dev/disk/by-uuid/a9504076-ec13-41e9-adb6-5385eb464a9f";
+    { device = "/dev/disk/by-uuid/7d77bcf2-d5f4-4ff4-992d-de583df23032";
       fsType = "btrfs";
       options = [ "subvol=swap" "defaults" "noatime" ];
     };
 
   swapDevices = [ { device = "/swap/swapfile"; } ];
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/EA55-50EF";
+      fsType = "vfat";
+    };
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
