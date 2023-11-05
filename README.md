@@ -103,6 +103,63 @@ useful information when going through these steps:
    ```shell
    ssh nixos@127.0.0.1 -p 60022
    ```
+## Install NixOs on Desktop Hardware
+
+We follow the tutorial from [Pablo Ovelleiro [@pinpox](https://github.com/pinpox)](https://pablo.tools/blog/computers/nixos-encrypted-install).
+Boot the NixOS ISO installer of the flashed USB.
+
+### Partioning
+
+Partitioning in NixOS is manual and mostly the same as you would do in Arch or any other "minimal" distribution. You can use gparted if you decided to boot the graphical installer, but I find the process simpler with good-old `gdisk`.
+
+We will be creating two partitions:
+
+- EFI partition (500M)
+- Encrypted physical volume for [LVM](https://de.wikipedia.org/wiki/Logical_Volume_Manager) (remaining space)
+
+Furthermore, LVM will be used inside the encrypted physical volume and 
+I will be adding (100% + `sqrt(100%)) of my ram as a swap partition (e.g. 64GB = 72GB) if we want proper
+hibernation. 
+For the thoroughly-paranoid this has the added benefit, that the swap partition will also be encrypted.
+
+Assuming the drive you want to install to is `/dev/sda`, run `gdisk` and create the partitions:
+To not make mistakes run the following in the terminal (**replace the disk**):
+
+```shell
+MYDISK=/dev/sda
+gdisk $MYDISK
+```
+
+Then do the following:
+
+  - `o` : Create empty gpt partition table.
+  - `n` : Add partition, first sector: default, last sector: +500M, type ef00 EFI (this is `/dev/sda1`).
+  - `n` : Add partition, remaining space, type 8e00 Linux LVM (this is  `/dev/sda2`).
+  - `w` : Write partition table and exit.
+
+We can now set up the encrypted LUKS partition and open it using cryptsetup
+
+```shell
+sudo cryptsetup luksFormat ${MYDISK}2
+sudo cryptsetup luksOpen ${MYDISK}2 enc-physical-vol
+```
+
+We create 3 logical volumes:
+- a swap partition with (100% + `sqrt(100%)) of ram at the end
+- a system parition for `/`
+- a partition for `/home` (optional)
+- a data partition (optional)
+
+We are not using the optional partitions so far. We create the volumes with:
+
+```shell
+sudo pvcreate /dev/mapper/enc-physical-vol
+sudo vgcreate vg /dev/mapper/enc-physical-vol
+sudo lvcreate -L 72G -n swap vg
+sudo lvcreate -l '100%FREE' -n root vg
+```
+
+Check the volumes by using `sudo lvdisplay vg`.
 
 ## Modify NixOS
 
