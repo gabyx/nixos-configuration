@@ -14,5 +14,10 @@
       (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ];})
     ];
   };
+
+  environment.systemPackages = with pkgs; [
+    font-manager
+  ]
+
   # ===========================================================================
 }
